@@ -1,4 +1,24 @@
 INSTALL(FILES
+  ArtCPack.cmake
   ArtDictionary.cmake
-  DESTINATION ${product}/${version}/Modules
+  ArtMake.cmake
+  BuildDictionary.cmake
+  BuildPlugins.cmake
+  CetParseArgs.cmake
+  CetRegexEscape.cmake
+  CetRootCint.cmake
+  CetTest.cmake
+  RunAndCompare.cmake
+  filter-output
+  cet_test_functions.sh
+  CheckClassVersion.cmake
+  FindCppUnit.cmake
+  FindSQLite3.cmake
+  FindTBB.cmake
+  ArtDictionary.cmake
+  CheckClassVersion.cmake
+  artInternalTools.cmake
+  artTools.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/art-${art_VERSION}
+  COMPONENT Development
   )

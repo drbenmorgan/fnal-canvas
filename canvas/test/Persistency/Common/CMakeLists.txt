@@ -1,3 +1,8 @@
+if (ALT_CMAKE)
+include(altCMakeLists.cmake)
+else()
+
+
 # project name
 project(DataFormatsCommonTest)
 
@@ -24,3 +29,4 @@ endforeach()
 cet_test(testDataFormatsCommon SOURCES testRunner.cpp ${cc_files}
                                LIBRARIES ${test_Persistency_Common_libraries})
 
+endif()

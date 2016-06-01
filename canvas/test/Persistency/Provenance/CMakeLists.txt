@@ -1,3 +1,7 @@
+if (ALT_CMAKE)
+include(altCMakeLists.cmake)
+else()
+
 set(CMAKE_MODULE_PATH
   ${CMAKE_MODULE_PATH}
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -79,3 +83,4 @@ cet_test(TypeWithDict_t USE_BOOST_UNIT
   ${ROOT_CORE}
   )
 
+endif()

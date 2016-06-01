@@ -1,0 +1,10 @@
+art_add_dictionary(DICTIONARY_LIBRARIES cetlib)
+
+install(TARGETS canvas_Persistency_CetlibDictionaries_dict
+  EXPORT CanvasLibraries
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  COMPONENT Runtime
+  )
+

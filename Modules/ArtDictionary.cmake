@@ -1,19 +1,16 @@
 ########################################################################
-# art_dictionary
+# art_add_dictionary
 #
 # Wrapper around cetbuildtools' build_dictionary featuring the addition
-# of commonly required libraries to the dictionary library link list.
-#
-# Note that use of check_class_version has been delegated to
-# build_dictionary(). The only difference between build_dictionary() and
-# art_dictionary() is now the aforementioned addition of commonly
-# required libraries to the dictionary library link list.
+# of commonly required libraries to the dictionary library link list,
+# and the use of the check_class_version to update checksums and
+# class versions for dictionary items.
 #
 ####################################
 # Options and Arguments
 #
-# COMPILE_FLAGS
-#   Passed through to build_dictionary.
+# UPDATE_IN_PLACE
+#   Passed through to check_class_version.
 #
 # DICT_FUNCTIONS
 #   Passed through to build_dictionary.
@@ -24,18 +21,7 @@
 # DICTIONARY_LIBRARIES
 #   Passed through to build_dictionary with additions.
 #
-# REQUIRED_DICTIONARIES
-#   Passed through to build_dictionaries.
-#
-# NO_CHECK_CLASS_VERSION
-#   Passed through to build_dictionaries.
-#
-# NO_DEFAULT_LIBRARIES
-#   Do not add the usual set of default libraries to the
-#   DICTIONARY_LIBRARIES list: equivalent to calling build_dictionary
-#   directly.
-#
-# UPDATE_IN_PLACE
+# COMPILE_FLAGS
 #   Passed through to build_dictionary.
 #
 # USE_PRODUCT_NAME
@@ -47,46 +33,42 @@ include(CMakeParseArguments)
 include(CheckClassVersion)
 
 function(art_dictionary)
-  check_ups_version(cetbuildtools ${cetbuildtools_UPS_VERSION} v5_0_0
-    PRODUCT_MATCHES_VAR AD_HAVE_REQUIRED_CETBUILDTOOLS)
-  if (NOT AD_HAVE_REQUIRED_CETBUILDTOOLS)
-    message(FATAL_ERROR "ArtDictionary requires cetbuildtools v5_0_0 or greater.")
-  endif()
+  message(WARNING "art_dictionary is deprecated, use art_add_dictionary")
+  art_add_dictionary(${ARGN})
+endfunction()
 
+function(art_add_dictionary)
   cmake_parse_arguments(AD
-    "UPDATE_IN_PLACE;DICT_FUNCTIONS;USE_PRODUCT_NAME;NO_CHECK_CLASS_VERSION;NO_DEFAULT_LIBRARIES"
+    "UPDATE_IN_PLACE;DICT_FUNCTIONS;USE_PRODUCT_NAME"
     "DICT_NAME_VAR"
-    "DICTIONARY_LIBRARIES;COMPILE_FLAGS;REQUIRED_DICTIONARIES"
+    "DICTIONARY_LIBRARIES;COMPILE_FLAGS"
     ${ARGN}
     )
-  if (NOT AD_NO_DEFAULT_LIBRARIES)
-    set(AD_DICTIONARY_LIBRARIES
-      canvas_Persistency_Common canvas_Persistency_Provenance canvas_Utilities cetlib ${AD_DICTIONARY_LIBRARIES}
-      )
-  endif()
-  set(extra_args "")
-  if (AD_DICT_FUNCTIONS)
-    list(APPEND extra_args DICT_FUNCTIONS)
-  endif()
-  if (AD_USE_PRODUCT_NAME)
-    list(APPEND extra_args USE_PRODUCT_NAME)
-  endif()
-  if (AD_NO_CHECK_CLASS_VERSION)
-    list(APPEND extra_args NO_CHECK_CLASS_VERSION)
-  endif()
-  if (AD_UPDATE_IN_PLACE)
-    list(APPEND extra_args UPDATE_IN_PLACE)
-  endif()
-  if (AD_COMPILE_FLAGS)
-    list(APPEND extra_args COMPILE_FLAGS ${AD_COMPILE_FLAGS})
-  endif()
+
+  # Setup common libs required for linking
+  # We can use target names consistently across build and client because
+  # of import/export of targets
+  set(AD_DICTIONARY_LIBRARIES
+    ${canvas_IMPORT_NAMESPACE}canvas_Persistency_Common
+    ${canvas_IMPORT_NAMESPACE}canvas_Utilities
+    cetlib
+    ${AD_DICTIONARY_LIBRARIES}
+    )
+
   build_dictionary(DICT_NAME_VAR dictname
     DICTIONARY_LIBRARIES ${AD_DICTIONARY_LIBRARIES}
     ${AD_UNPARSED_ARGUMENTS}
     ${extra_args})
+
+  # "returns"
+  # We *probably* don't care about this as it only
+  # appears to be relevant when installing source
+  # code, and we almost certainly don't want to do that
+  # for generated code.
   if (cet_generated_code) # Bubble up to top scope.
     set(cet_generated_code ${cet_generated_code} PARENT_SCOPE)
   endif()
+
   if (AD_DICT_NAME_VAR)
     set (${AD_DICT_NAME_VAR} ${dictname} PARENT_SCOPE)
   endif()

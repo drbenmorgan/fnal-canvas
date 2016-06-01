@@ -1,3 +1,7 @@
+if (ALT_CMAKE)
+include(altCMakeLists.cmake)
+else()
+
 cet_enable_asserts()
 
 # add_definitions(-DART_NO_MIX_PTRVECTOR)
@@ -13,3 +17,5 @@ add_subdirectory (Persistency/Provenance)
 add_subdirectory (Version)
 add_subdirectory (Utilities)
 add_subdirectory(tbb)
+
+endif()

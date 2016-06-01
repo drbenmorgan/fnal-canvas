@@ -11,7 +11,9 @@
 #  make install
 #  make package (builds distribution tarfile)
 # ======================================================================
-
+if (ALT_CMAKE) 
+include(altCMakeLists.cmake)
+else()
 
 # use cmake 2.8 or later
 cmake_minimum_required (VERSION 2.8)
@@ -70,3 +72,4 @@ add_subdirectory(Modules)
 
 # packaging utility
 include(UseCPack)
+endif()

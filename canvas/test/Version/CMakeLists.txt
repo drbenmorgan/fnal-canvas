@@ -1,3 +1,7 @@
+if (ALT_CMAKE)
+include(altCMakeLists.cmake)
+else()
+
 # project name
 project(canvas_Version_Test)
 
@@ -10,3 +14,4 @@ cet_test(GetCanvasReleaseVersion
   LIBRARIES canvas_Version
   )
 
+endif()
