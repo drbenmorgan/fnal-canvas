@@ -68,8 +68,8 @@ include(GNUInstallDirs)
 include(CheckCXXCompilerFlag)
 
 # - Local Customs
-include(artInternalTools)
-include(artTools)
+#include(artInternalTools)
+#include(artTools)
 include(ArtDictionary)
 
 # - Build product locations
