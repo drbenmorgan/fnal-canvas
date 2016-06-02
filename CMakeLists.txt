@@ -1,3 +1,7 @@
+if (ALT_CMAKE) 
+include(altCMakeLists.cmake)
+else()
+
 # ======================================================================
 #  art main build file
 #
@@ -11,9 +15,7 @@
 #  make install
 #  make package (builds distribution tarfile)
 # ======================================================================
-if (ALT_CMAKE) 
-include(altCMakeLists.cmake)
-else()
+
 
 # use cmake 2.8 or later
 cmake_minimum_required (VERSION 2.8)
@@ -21,9 +23,13 @@ cmake_minimum_required (VERSION 2.8)
 project(art)
 
 # cetbuildtools contains our cmake modules
-find_package(cetbuildtools REQUIRED)
-
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Modules)
+SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
+IF (NOT CETBUILDTOOLS_VERSION)
+    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
+ENDIF()
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Modules 
+                      $ENV{CETBUILDTOOLS_DIR}/Modules 
+		      ${CMAKE_MODULE_PATH})
 
 include(CetCMakeEnv)
 cet_cmake_env()
@@ -57,12 +63,18 @@ cet_find_library( CLHEP  NAMES CLHEP   PATHS ENV CLHEP_LIB_DIR NO_DEFAULT_PATH )
 # define cppunit
 cet_find_library( CPPUNIT NAMES cppunit   PATHS ENV CPPUNIT_LIB   NO_DEFAULT_PATH )
 
-# art_dictionary
+# macros for art_dictionary and simple_plugin
 include(ArtDictionary)
+include(BuildPlugins)
+
+# tools
+add_subdirectory(tools)
 
 # source
 add_subdirectory (canvas)
-add_subdirectory (tools)
+
+# testing
+add_subdirectory(test)
 
 # ups - table and config files
 add_subdirectory(ups)
@@ -72,4 +84,5 @@ add_subdirectory(Modules)
 
 # packaging utility
 include(UseCPack)
+
 endif()
