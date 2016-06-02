@@ -101,11 +101,11 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${BASE_OUTPUT_DIRECTORY}/${CMAKE_INSTALL_LIB
 # full portability between the art build and clients.
 # We set it up *here* because we need to append the library output
 # directory to checkClassVersion's search path.
-add_executable(canvas::checkClassVersion IMPORTED)
-set_target_properties(canvas::checkClassVersion PROPERTIES IMPORTED_LOCATION
-  ${CMAKE_CURRENT_SOURCE_DIR}/tools/checkClassVersion
-  )
-checkclassversion_append_path(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+#add_executable(canvas::checkClassVersion IMPORTED)
+#set_target_properties(canvas::checkClassVersion PROPERTIES IMPORTED_LOCATION
+#  ${CMAKE_CURRENT_SOURCE_DIR}/tools/checkClassVersion
+#  )
+#checkclassversion_append_path(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 #-----------------------------------------------------------------------
 # Required Third Party Packages
