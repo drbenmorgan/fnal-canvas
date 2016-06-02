@@ -68,8 +68,8 @@ include(GNUInstallDirs)
 include(CheckCXXCompilerFlag)
 
 # - Local Customs
-#include(artInternalTools)
-#include(artTools)
+include(artInternalTools)
+include(artTools)
 include(ArtDictionary)
 
 # - Build product locations
@@ -149,9 +149,9 @@ if(NOT ROOT_python_FOUND)
   message(FATAL_ERROR "art requires ROOT with Python support")
 endif()
 
-find_package(cetlib REQUIRED)
-find_package(fhiclcpp REQUIRED)
-find_package(messagefacility REQUIRED)
+find_package(cetlib 1.17.4 REQUIRED)
+find_package(fhiclcpp 3.18.4 REQUIRED)
+find_package(messagefacility 1.16.24 REQUIRED)
 
 # Need to implement
 find_package(TBB 4.1.0 REQUIRED)
