@@ -1,4 +1,4 @@
-art_add_dictionary(DICTIONARY_LIBRARIES cetlib)
+art_add_dictionary(DICTIONARY_LIBRARIES cetlib::cetlib)
 
 install(TARGETS canvas_Persistency_CetlibDictionaries_dict
   EXPORT CanvasLibraries

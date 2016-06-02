@@ -48,12 +48,15 @@ target_include_directories(canvas_Utilities
   PRIVATE ${ROOT_INCLUDE_DIRS}
   )
 
+include(FindThreads)
+
 target_link_libraries(canvas_Utilities
   LINK_PUBLIC
   MF_MessageLogger
   MF_Utilities
-  fhiclcpp
-  cetlib
+  fhiclcpp::fhiclcpp
+  cetlib::cetlib
+  Threads::Threads
   ${Boost_FILESYSTEM_LIBRARY}
   ${Boost_REGEX_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
@@ -63,7 +66,6 @@ target_link_libraries(canvas_Utilities
   ${ROOT_Tree_LIBRARY}
   ${ROOT_RIO_LIBRARY}
   ${TBB_LIBRARY_RELEASE}
-  -lpthread
   ${CMAKE_DL_LIBS}
   )
 
