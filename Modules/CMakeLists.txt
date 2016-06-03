@@ -1,5 +1,5 @@
 if (ALT_CMAKE)
-include(CMakeLists.cmake)
+include(altCMakeLists.cmake)
 else()
 
 INSTALL(FILES
