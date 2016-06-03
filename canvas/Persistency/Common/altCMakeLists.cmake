@@ -1,4 +1,5 @@
 include_directories(${cetlib_DIR}/../../../include)
+include_directories(${CLHEP_DIR}/../../include)
 
 # - Build canvas_Persistency_Common lib
 
