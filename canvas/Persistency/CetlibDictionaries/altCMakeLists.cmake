@@ -1,6 +1,6 @@
 include_directories(${cetlib_DIR}/../../../include)
 
-art_dictionary(DICTIONARY_LIBRARIES ${cetlib_DIR}/../libcetlib.so)
+art_dictionary(DICTIONARY_LIBRARIES ${cetlib_DIR}/../../libcetlib.so)
 
 install(TARGETS canvas_Persistency_CetlibDictionaries_dict
   EXPORT CanvasLibraries

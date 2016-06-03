@@ -52,6 +52,7 @@ set(canvas_Persistency_Common_HEADERS
 
 set(canvas_Persistency_Common_DETAIL_HEADERS
    detail/IPRHelper.h
+   detail/aggregate.h
    detail/is_handle.h
    detail/maybeCastObj.h
    detail/setPtrVectorBaseStreamer.h
@@ -68,6 +69,7 @@ add_library(canvas_Persistency_Common SHARED
    RefCoreStreamer.cc
    RNGsnapshot.cc
    traits.cc
+   detail/aggregate.cc
    detail/maybeCastObj.cc
    detail/setPtrVectorBaseStreamer.cc
   )

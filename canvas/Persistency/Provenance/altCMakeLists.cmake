@@ -102,6 +102,7 @@ target_link_libraries(canvas_Persistency_Provenance
   LINK_PUBLIC
    canvas_Utilities
    MF_MessageLogger
+   ${cetlib_DIR}/../../libcetlib.so
   LINK_PRIVATE
    ${BOOST_THREAD_LIBRARY}
   )
