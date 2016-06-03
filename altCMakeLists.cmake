@@ -110,28 +110,17 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${BASE_OUTPUT_DIRECTORY}/${CMAKE_INSTALL_LIB
 #-----------------------------------------------------------------------
 # Required Third Party Packages
 
-set(art_MIN_BOOST_VERSION "1.53.0")
+set(canvas_MIN_BOOST_VERSION "1.60.0")
 
 
 # - Ensure we can refind Boost and extra components we need
-find_package(Boost ${art_MIN_BOOST_VERSION}
+find_package(Boost ${canvas_MIN_BOOST_VERSION}
   REQUIRED
     date_time
     unit_test_framework
     program_options
   )
 
-# - Needs review and implementation where required (though should
-# be off-the-shelf FindX for most)
-# Other issues - could ROOT supply some of these, e.g. sqlite3
-# gccxml, tbb?
-# Need to implement
-
-# Is supplied by CMake, but no version checking, so need to check
-# Also, this is only used "behind the scenes" via ROOT's genreflex script
-# never directly, so strictly speaking it's ROOT's responsibility
-# to handle this for us.
-#find_package(GCCXML 0.9.0 REQUIRED)
 
 # CLHEP supplies a CMake project config...
 find_package(CLHEP 2.2.0.3 REQUIRED)
@@ -141,12 +130,12 @@ find_package(SQLite3 3.8.5 REQUIRED)
 
 # Cross check with what ROOT supply - ideally would like component
 # based checks.
-find_package(ROOT 6.00.00 REQUIRED)
+find_package(ROOT 6.06.02 REQUIRED)
 # - Must have Python support - it doesn't work as a COMPONENT
 # argument to find_package because Root's component lookup only
 # works for libraries.
 if(NOT ROOT_python_FOUND)
-  message(FATAL_ERROR "art requires ROOT with Python support")
+  message(FATAL_ERROR "canvas requires ROOT with Python support")
 endif()
 
 find_package(cetlib 1.17.4 REQUIRED)
@@ -154,7 +143,7 @@ find_package(fhiclcpp 3.18.4 REQUIRED)
 find_package(messagefacility 1.16.24 REQUIRED)
 
 # Need to implement
-find_package(TBB 4.1.0 REQUIRED)
+find_package(TBB 4.3.0 REQUIRED)
 
 #-----------------------------------------------------------------------
 # Set up paths for all subbuilds
@@ -169,16 +158,6 @@ add_subdirectory(canvas)
 # cmake modules
 
 add_subdirectory(Modules)
-
-# testing
-option(art_ENABLE_TESTING "Built unit tests for art" OFF)
-if(art_ENABLE_TESTING)
-  # cppunit *only* needed for testing
-  enable_testing()
-  find_package(CppUnit 1.12.1 REQUIRED)
-  add_subdirectory(test)
-endif()
-
 
 #-----------------------------------------------------------------------
 # Install support files - usage from install tree only...
@@ -215,4 +194,4 @@ install(EXPORT CanvasLibraries
 #-----------------------------------------------------------------------
 # Package for Source and Binary
 #
-include(ArtCPack)
+include(CPack)
