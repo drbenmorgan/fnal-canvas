@@ -1,3 +1,5 @@
+include_directories(${cetlib_DIR}/../../../include)
+
 art_dictionary()
 
 install(TARGETS canvas_Persistency_WrappedStdDictionaries_dict

@@ -1,3 +1,5 @@
+include_directories(${cetlib_DIR}/../../../include)
+
 # - Build canvas_Persistency_Provenance lib
 # Define headers
 set(canvas_Persistency_Provenance_HEADERS

@@ -1,3 +1,5 @@
+include_directories(${cetlib_DIR}/../../../include)
+
 # - Build canvas_Persistency_Common lib
 
 foreach(ART_IPR_BASE_NAME FindOne FindMany)

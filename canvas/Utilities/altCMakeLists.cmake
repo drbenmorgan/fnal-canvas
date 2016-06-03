@@ -1,3 +1,5 @@
+include_directories(${cetlib_DIR}/../../../include)
+
 set(canvas_UTILITIES_HEADERS
    DebugMacros.h
    ensurePointer.h
