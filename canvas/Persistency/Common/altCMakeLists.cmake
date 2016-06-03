@@ -30,10 +30,10 @@ set(canvas_Persistency_Common_HEADERS
    EDProductGetterFinder.h
    EDProductGetter.h
    EDProduct.h
-   FindMany.h
-   FindManyP.h
-   FindOne.h
-   FindOneP.h
+   ${CMAKE_CURRENT_BINARY_DIR}/FindMany.h
+   ${CMAKE_CURRENT_BINARY_DIR}/FindManyP.h
+   ${CMAKE_CURRENT_BINARY_DIR}/FindOne.h
+   ${CMAKE_CURRENT_BINARY_DIR}/FindOneP.h
    fwd.h
    getElementAddresses.h
    GetProduct.h
