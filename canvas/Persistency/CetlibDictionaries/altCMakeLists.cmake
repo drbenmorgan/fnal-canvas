@@ -1,4 +1,5 @@
 include_directories(${cetlib_DIR}/../../../include)
+include_directories(${CLHEP_DIR}/../../include)
 
 art_dictionary(DICTIONARY_LIBRARIES ${cetlib_DIR}/../../libcetlib.so)
 
