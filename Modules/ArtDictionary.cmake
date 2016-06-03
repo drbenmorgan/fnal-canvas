@@ -62,7 +62,7 @@ function(art_dictionary)
     )
   if (NOT AD_NO_DEFAULT_LIBRARIES)
     set(AD_DICTIONARY_LIBRARIES
-      canvas_Persistency_Common canvas_Persistency_Provenance canvas_Utilities cetlib ${AD_DICTIONARY_LIBRARIES}
+      canvas_Persistency_Common canvas_Persistency_Provenance canvas_Utilities cetlib::cetlib ${AD_DICTIONARY_LIBRARIES}
       )
   endif()
   set(extra_args "")

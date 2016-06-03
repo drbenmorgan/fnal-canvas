@@ -1,4 +1,4 @@
-add_dictionary()
+art_dictionary()
 
 install(TARGETS canvas_Persistency_WrappedStdDictionaries_dict
   EXPORT CanvasLibraries
