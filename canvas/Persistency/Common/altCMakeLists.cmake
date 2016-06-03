@@ -94,7 +94,7 @@ set_target_properties(canvas_Persistency_Common
   )
 
 # - Dictify
-art_add_dictionary(DICTIONARY_LIBRARIES canvas_Persistency_Common)
+art_dictionary(DICTIONARY_LIBRARIES canvas_Persistency_Common)
 
 install(TARGETS canvas_Persistency_Common canvas_Persistency_Common_dict
   EXPORT CanvasLibraries
