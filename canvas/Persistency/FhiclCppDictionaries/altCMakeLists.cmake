@@ -1,5 +1,6 @@
+include_directories(${fhiclcpp_DIR}/include)
 
-art_dictionary(DICTIONARY_LIBRARIES fhiclcpp NO_CHECK_CLASS_VERSION)
+art_dictionary(DICTIONARY_LIBRARIES ${fhiclcpp_DIR}/lib64/libfhiclcpp.so NO_CHECK_CLASS_VERSION)
 
 install(TARGETS
   canvas_Persistency_FhiclCppDictionaries_dict

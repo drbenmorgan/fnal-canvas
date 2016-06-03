@@ -1,4 +1,6 @@
-art_dictionary(DICTIONARY_LIBRARIES ${CLHEP} NO_CHECK_CLASS_VERSION)
+include_directories(${CLHEP_DIR}/include)
+
+art_dictionary(DICTIONARY_LIBRARIES ${CLHEP_DIR}/lib64/libCLHEP.so NO_CHECK_CLASS_VERSION)
 
 install(TARGETS canvas_Persistency_CLHEPDictionaries_dict 
   EXPORT CanvasLibraries
