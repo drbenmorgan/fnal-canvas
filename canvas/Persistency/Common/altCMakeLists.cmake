@@ -86,6 +86,7 @@ target_link_libraries(canvas_Persistency_Common
   PUBLIC
   canvas_Utilities
   canvas_Persistency_Provenance
+  ${CLHEP_DIR}/../libCLHEP.so
   ${ROOT_Core_LIBRARY}
   ${Boost_THREAD_LIBRARY}
   )
