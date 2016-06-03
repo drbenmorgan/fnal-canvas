@@ -1,5 +1,5 @@
 
-art_add_dictionary(DICTIONARY_LIBRARIES fhiclcpp NO_CHECK_CLASS_VERSION)
+add_dictionary(DICTIONARY_LIBRARIES fhiclcpp NO_CHECK_CLASS_VERSION)
 
 install(TARGETS
   canvas_Persistency_FhiclCppDictionaries_dict

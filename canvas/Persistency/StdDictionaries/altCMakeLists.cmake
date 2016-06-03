@@ -1,4 +1,4 @@
-art_add_dictionary(DICTIONARY_LIBRARIES cetlib NO_CHECK_CLASS_VERSION)
+add_dictionary(DICTIONARY_LIBRARIES cetlib NO_CHECK_CLASS_VERSION)
 install(TARGETS canvas_Persistency_StdDictionaries_dict 
   EXPORT CanvasLibraries
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
