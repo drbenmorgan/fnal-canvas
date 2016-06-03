@@ -1,4 +1,4 @@
-include_directories(${CLHEP_DIR}/../../../include)
+include_directories(${CLHEP_DIR}/../../include)
 include_directories(${cetlib_DIR}/../../../include)
 
 art_dictionary(DICTIONARY_LIBRARIES ${CLHEP_DIR}/../libCLHEP.so NO_CHECK_CLASS_VERSION)
