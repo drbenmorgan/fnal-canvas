@@ -1,4 +1,4 @@
-include_directories(${cetlib_DIR}/../../../include)
+include_directories(${cetlib_INCLUDEDIR})
 
 # - Build canvas_Persistency_Provenance lib
 # Define headers
@@ -102,7 +102,7 @@ target_link_libraries(canvas_Persistency_Provenance
   LINK_PUBLIC
    canvas_Utilities
    MF_MessageLogger
-   ${cetlib_DIR}/../../libcetlib.so
+   cetlib::cetlib
   LINK_PRIVATE
    ${BOOST_THREAD_LIBRARY}
   )

@@ -1,7 +1,7 @@
-include_directories(${fhiclcpp_DIR}/../../../include)
-include_directories(${cetlib_DIR}/../../../include)
+include_directories(${fhiclcpp_INCLUDEDIR})
+include_directories(${cetlib_INCLUDEDIR})
 
-art_dictionary(DICTIONARY_LIBRARIES ${fhiclcpp_DIR}/../../libfhiclcpp.so ${cetlib_DIR}/../../libcetlib.so NO_CHECK_CLASS_VERSION)
+art_dictionary(DICTIONARY_LIBRARIES fhiclcpp::fhiclcpp cetlib::cetlib NO_CHECK_CLASS_VERSION)
 
 install(TARGETS
   canvas_Persistency_FhiclCppDictionaries_dict

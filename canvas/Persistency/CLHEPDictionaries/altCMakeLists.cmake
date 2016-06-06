@@ -1,7 +1,7 @@
-include_directories(${CLHEP_DIR}/../../include)
-include_directories(${cetlib_DIR}/../../../include)
+include_directories(${CLHEP_INCLUDE_DIR})
+include_directories(${cetlib_INCLUDEDIR})
 
-art_dictionary(DICTIONARY_LIBRARIES ${CLHEP_DIR}/../libCLHEP.so NO_CHECK_CLASS_VERSION)
+art_dictionary(DICTIONARY_LIBRARIES CLHEP::CLHEP NO_CHECK_CLASS_VERSION)
 
 install(TARGETS canvas_Persistency_CLHEPDictionaries_dict 
   EXPORT CanvasLibraries

@@ -1,7 +1,7 @@
-include_directories(${cetlib_DIR}/../../../include)
-include_directories(${CLHEP_DIR}/../../include)
+include_directories(${cetlib_INCLUDEDIR})
+include_directories(${CLHEP_INCLUDE_DIR})
 
-art_dictionary(DICTIONARY_LIBRARIES ${cetlib_DIR}/../../libcetlib.so)
+art_dictionary(DICTIONARY_LIBRARIES cetlib::cetlib)
 
 install(TARGETS canvas_Persistency_CetlibDictionaries_dict
   EXPORT CanvasLibraries

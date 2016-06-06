@@ -125,10 +125,10 @@ find_package(Boost ${canvas_MIN_BOOST_VERSION}
 
 
 # CLHEP supplies a CMake project config...
-find_package(CLHEP 2.2.0.3 REQUIRED)
+find_package(CLHEP 2.3.2.2 REQUIRED)
 
 # SQLite3 - NB messagefacility also depends on and exposes this...
-find_package(SQLite3 3.8.5 REQUIRED)
+find_package(SQLite 3.8.5 REQUIRED)
 
 # Cross check with what ROOT supply - ideally would like component
 # based checks.

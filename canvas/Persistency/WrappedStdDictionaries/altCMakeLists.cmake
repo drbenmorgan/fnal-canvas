@@ -1,5 +1,5 @@
-include_directories(${cetlib_DIR}/../../../include)
-include_directories(${CLHEP_DIR}/../../include)
+include_directories(${cetlib_INCLUDEDIR})
+include_directories(${CLHEP_INCLUDE_DIR})
 
 art_dictionary()
 
