@@ -70,7 +70,6 @@ add_library(canvas_Persistency_Common SHARED
    RefCoreStreamer.cc
    RNGsnapshot.cc
    traits.cc
-   detail/aggregate.cc
    detail/maybeCastObj.cc
    detail/setPtrVectorBaseStreamer.cc
   )
