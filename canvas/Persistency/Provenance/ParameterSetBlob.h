@@ -12,6 +12,7 @@ tracked parameters within a ParameterSet,
 
 #include <iosfwd>
 #include <string>
+#include <iostream>
 
 // ----------------------------------------------------------------------
 
