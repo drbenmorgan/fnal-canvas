@@ -6,7 +6,7 @@ set(canvas_VERSION @canvas_VERSION@)
 
 @PACKAGE_INIT@
 
-set_and_check(canvas_INCLUDE_DIRS "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
+set_and_check(canvas_INCLUDEDIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
 set_and_check(canvas_LIBDIR "@PACKAGE_CMAKE_INSTALL_LIBDIR@")
 
 # - Third-party details/refinds

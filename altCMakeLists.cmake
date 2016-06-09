@@ -46,7 +46,7 @@ set(art_DEBUG_POSTFIX "d")
 #
 # - Cetbuildtools, version2
 find_package(cetbuildtools2 0.1.0 REQUIRED)
-set(CMAKE_MODULE_PATH ${cetbuildtools2_MODULE_PATH})
+list(INSERT CMAKE_MODULE_PATH 0 ${cetbuildtools2_MODULE_PATH})
 include(CetInstallDirs)
 message(STATUS "CMAKE_INSTALL_CMAKEDIR : x${CMAKE_INSTALL_FHICLDIR}")
 include(CetCMakeSettings)
@@ -114,7 +114,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${BASE_OUTPUT_DIRECTORY}/${CMAKE_INSTALL_LIB
 
 set(canvas_MIN_BOOST_VERSION "1.60.0")
 
-
+set(Boost_NO_BOOST_CMAKE ON)
 # - Ensure we can refind Boost and extra components we need
 find_package(Boost ${canvas_MIN_BOOST_VERSION}
   REQUIRED
