@@ -1,5 +1,6 @@
 include_directories(${fhiclcpp_INCLUDEDIR})
 include_directories(${cetlib_INCLUDEDIR})
+include_directories(${Boost_INCLUDE_DIR})
 
 art_dictionary(DICTIONARY_LIBRARIES fhiclcpp::fhiclcpp cetlib::cetlib NO_CHECK_CLASS_VERSION)
 

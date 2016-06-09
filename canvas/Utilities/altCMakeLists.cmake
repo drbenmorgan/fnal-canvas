@@ -1,4 +1,5 @@
 include_directories(${cetlib_INCLUDEDIR})
+include_directories(${Boost_INCLUDE_DIR})
 
 set(canvas_UTILITIES_HEADERS
    DebugMacros.h

@@ -1,4 +1,5 @@
 include_directories(${cetlib_INCLUDEDIR})
+include_directories(${Boost_INCLUDE_DIR})
 
 # - Build canvas_Persistency_Provenance lib
 # Define headers
