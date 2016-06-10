@@ -82,13 +82,8 @@ add_library(canvas_Persistency_Common SHARED
 #   ${BOOST_INCLUDE_DIRS}
 #   )
 
-if(APPLE)
-  set(CXXABI="-lc++abi")
-else()
-  set(CXXABI="")
-endif()
-
 # Describe library link interface
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 target_link_libraries(canvas_Persistency_Common
   PUBLIC
   canvas_Utilities
@@ -96,8 +91,18 @@ target_link_libraries(canvas_Persistency_Common
   CLHEP::CLHEP
   ${ROOT_Core_LIBRARY}
   ${Boost_THREAD_LIBRARY}
-  ${CXXABI}
+  c++abi
   )
+else()
+target_link_libraries(canvas_Persistency_Common
+  PUBLIC
+  canvas_Utilities
+  canvas_Persistency_Provenance
+  CLHEP::CLHEP
+  ${ROOT_Core_LIBRARY}
+  ${Boost_THREAD_LIBRARY}
+)
+endif()
 
 # Set any additional properties
 set_target_properties(canvas_Persistency_Common
