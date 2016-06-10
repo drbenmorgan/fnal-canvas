@@ -83,6 +83,7 @@ function(art_dictionary)
   endif()
   build_dictionary(DICT_NAME_VAR dictname
     DICTIONARY_LIBRARIES ${AD_DICTIONARY_LIBRARIES}
+    NO_CHECK_CLASS_VERSION
     ${AD_UNPARSED_ARGUMENTS}
     ${extra_args})
   if (cet_generated_code) # Bubble up to top scope.
