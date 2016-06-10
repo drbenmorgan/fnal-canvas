@@ -82,6 +82,12 @@ add_library(canvas_Persistency_Common SHARED
 #   ${BOOST_INCLUDE_DIRS}
 #   )
 
+if(APPLE)
+  set(CXXABI="-lc++abi")
+else()
+  set(CXXABI="")
+endif()
+
 # Describe library link interface
 target_link_libraries(canvas_Persistency_Common
   PUBLIC
@@ -90,6 +96,7 @@ target_link_libraries(canvas_Persistency_Common
   CLHEP::CLHEP
   ${ROOT_Core_LIBRARY}
   ${Boost_THREAD_LIBRARY}
+  ${CXXABI}
   )
 
 # Set any additional properties
