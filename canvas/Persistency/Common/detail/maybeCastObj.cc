@@ -15,6 +15,95 @@
 using namespace art;
 using namespace std;
 
+
+#if __APPLE__ && __MACH__
+namespace __cxxabiv1 {
+extern "C" {
+
+class __class_type_info;
+
+// Helper class for __vmi_class_type.
+class __base_class_type_info {
+public:
+
+  const __class_type_info* __base_type;
+  long __offset_flags;
+
+  enum __offset_flags_masks {
+    __virtual_mask = 0x1,
+    __public_mask = 0x2,
+    __hwm_bit = 2,
+    __offset_shift = 8
+  };
+
+};
+
+class __class_type_info : public std::type_info {
+public:
+
+  explicit
+  __class_type_info(const char *__n)
+  : type_info(__n) {}
+
+  virtual
+  ~__class_type_info();
+
+  enum __sub_kind {
+    __unknown = 0,
+    __not_contained,
+    __contained_ambig,
+    __contained_virtual_mask = __base_class_type_info::__virtual_mask,
+    __contained_public_mask = __base_class_type_info::__public_mask,
+    __contained_mask = 1 << __base_class_type_info::__hwm_bit,
+    __contained_private = __contained_mask,
+    __contained_public = __contained_mask | __contained_public_mask
+  };
+
+};
+
+class __si_class_type_info : public __class_type_info {
+public:
+
+  const __class_type_info* __base_type;
+
+  explicit
+  __si_class_type_info(const char *__n, const __class_type_info *__base)
+  : __class_type_info(__n), __base_type(__base) {}
+
+  virtual
+  ~__si_class_type_info();
+
+};
+
+class __vmi_class_type_info : public __class_type_info {
+public:
+
+  unsigned int __flags;
+  unsigned int __base_count;
+  __base_class_type_info __base_info[1];
+
+  explicit
+  __vmi_class_type_info(const char* __n, int ___flags)
+  : __class_type_info(__n), __flags(___flags), __base_count(0) {}
+
+  virtual
+  ~__vmi_class_type_info();
+
+  enum __flags_masks {
+    __non_diamond_repeat_mask = 0x1,
+    __diamond_shaped_mask = 0x2,
+    __flags_unknown_mask = 0x10
+  };
+
+};
+
+} // extern "C"
+} // namespace __cxxabiv1
+
+namespace abi = __cxxabiv1;
+#endif // __APPLE__ && __MACH__
+
+
 namespace {
 
 class upcast_result {
