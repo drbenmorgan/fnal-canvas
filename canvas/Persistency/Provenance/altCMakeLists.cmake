@@ -16,12 +16,14 @@ classes.h
 DictionaryChecker.h
 EventAuxiliary.h
 EventID.h
+EventRange.h
 EventSelectionID.h
 FileFormatVersion.h
 FileIndex.h
 HashedTypes.h
 Hash.h
 History.h
+IDNumber.h
 ModuleDescription.h
 ModuleDescriptionID.h
 ParameterSetBlob.h
@@ -40,6 +42,7 @@ ProductProvenance.h
 ProductRegistry.h
 ProductStatus.h
 ProvenanceFwd.h
+RangeSet.h
 ReleaseVersion.h
 ResultsAuxiliary.h
 rootNames.h
@@ -68,6 +71,7 @@ BranchType.cc
 DictionaryChecker.cc
 EventAuxiliary.cc
 EventID.cc
+EventRange.cc
 FileFormatVersion.cc
 FileIndex.cc
 Hash.cc
@@ -79,6 +83,7 @@ ProcessConfiguration.cc
 ProcessHistory.cc
 ProductID.cc
 ProductProvenance.cc
+RangeSet.cc
 ResultsAuxiliary.cc
 rootNames.cc
 RunAuxiliary.cc
