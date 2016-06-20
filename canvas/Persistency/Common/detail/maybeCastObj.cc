@@ -16,7 +16,7 @@ using namespace art;
 using namespace std;
 
 
-#if __APPLE__ && __MACH__
+#if defined(__clang__)
 namespace __cxxabiv1 {
 extern "C" {
 
@@ -101,7 +101,7 @@ public:
 } // namespace __cxxabiv1
 
 namespace abi = __cxxabiv1;
-#endif // __APPLE__ && __MACH__
+#endif // !defined(__clang__)
 
 
 namespace {
