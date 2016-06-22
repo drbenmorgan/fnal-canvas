@@ -21,6 +21,7 @@ list(INSERT CMAKE_MODULE_PATH 0 ${cetbuildtools2_MODULE_PATH})
 include(CetInstallDirs)
 include(CetCMakeSettings)
 include(CetCompilerSettings)
+include(CetTest)
 
 # C++ Standard Config
 set(CMAKE_CXX_EXTENSIONS OFF)
