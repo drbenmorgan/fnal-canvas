@@ -42,23 +42,11 @@ include(ArtDictionary)
 set(BASE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/BuildProducts")
 set(flavorqual_dir "${BASE_OUTPUT_DIRECTORY}/${CMAKE_INSTALL_LIBDIR}")
 
-# Implement SSE2 as option?
+# Implement SSE2 as option (TODO: IN CETBUILDTOOLS2)
 #cet_have_qual(sse2 SSE2)
 #if ( SSE2 )
 #  cet_add_compiler_flags(CXX -msse2 -ftree-vectorizer-verbose=2)
 #endif()
-
-# Use an imported target for checkClassVersion to give transparency
-# between art build and client usage.
-# This *is* a little messy, but eases the writing of the scripts for
-# full portability between the art build and clients.
-# We set it up *here* because we need to append the library output
-# directory to checkClassVersion's search path.
-#add_executable(canvas::checkClassVersion IMPORTED)
-#set_target_properties(canvas::checkClassVersion PROPERTIES IMPORTED_LOCATION
-#  ${CMAKE_CURRENT_SOURCE_DIR}/tools/checkClassVersion
-#  )
-#checkclassversion_append_path(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 #-----------------------------------------------------------------------
 # Required Third Party Packages
@@ -103,7 +91,6 @@ find_package(TBB 4.3.0 REQUIRED)
 #
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_BINARY_DIR})
-
 
 # source
 add_subdirectory(canvas)
