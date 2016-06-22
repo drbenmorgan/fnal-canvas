@@ -1,4 +1,4 @@
-INSTALL(FILES
+install(FILES
   ArtDictionary.cmake
   FindCppUnit.cmake
   FindTBB.cmake

@@ -53,48 +53,46 @@ include(BuildDictionary)
 include(CMakeParseArguments)
 
 function(art_dictionary)
-#  check_ups_version(cetbuildtools ${cetbuildtools_UPS_VERSION} v5_0_0
-#    PRODUCT_MATCHES_VAR AD_HAVE_REQUIRED_CETBUILDTOOLS)
-#  if (NOT AD_HAVE_REQUIRED_CETBUILDTOOLS)
-#    message(FATAL_ERROR "ArtDictionary requires cetbuildtools v5_0_0 or greater.")
-#  endif()
-
   cmake_parse_arguments(AD
     "UPDATE_IN_PLACE;DICT_FUNCTIONS;USE_PRODUCT_NAME;NO_CHECK_CLASS_VERSION;NO_DEFAULT_LIBRARIES"
     "DICT_NAME_VAR"
     "DICTIONARY_LIBRARIES;COMPILE_FLAGS;REQUIRED_DICTIONARIES"
     ${ARGN}
     )
-  if (NOT AD_NO_DEFAULT_LIBRARIES)
+
+  if(NOT AD_NO_DEFAULT_LIBRARIES)
     set(AD_DICTIONARY_LIBRARIES
       canvas_Persistency_Common canvas_Persistency_Provenance canvas_Utilities cetlib::cetlib ${AD_DICTIONARY_LIBRARIES}
       )
   endif()
+
   set(extra_args "")
-  if (AD_DICT_FUNCTIONS)
+  if(AD_DICT_FUNCTIONS)
     list(APPEND extra_args DICT_FUNCTIONS)
   endif()
-  if (AD_USE_PRODUCT_NAME)
+  if(AD_USE_PRODUCT_NAME)
     list(APPEND extra_args USE_PRODUCT_NAME)
   endif()
-  if (AD_NO_CHECK_CLASS_VERSION)
+  if(AD_NO_CHECK_CLASS_VERSION)
     list(APPEND extra_args NO_CHECK_CLASS_VERSION)
   endif()
-  if (AD_UPDATE_IN_PLACE)
+  if(AD_UPDATE_IN_PLACE)
     list(APPEND extra_args UPDATE_IN_PLACE)
   endif()
-  if (AD_COMPILE_FLAGS)
+  if(AD_COMPILE_FLAGS)
     list(APPEND extra_args COMPILE_FLAGS ${AD_COMPILE_FLAGS})
   endif()
+
   build_dictionary(DICT_NAME_VAR dictname
     DICTIONARY_LIBRARIES ${AD_DICTIONARY_LIBRARIES}
     NO_CHECK_CLASS_VERSION
     ${AD_UNPARSED_ARGUMENTS}
     ${extra_args})
-  if (cet_generated_code) # Bubble up to top scope.
+
+  if(cet_generated_code) # Bubble up to top scope.
     set(cet_generated_code ${cet_generated_code} PARENT_SCOPE)
   endif()
-  if (AD_DICT_NAME_VAR)
-    set (${AD_DICT_NAME_VAR} ${dictname} PARENT_SCOPE)
+  if(AD_DICT_NAME_VAR)
+    set(${AD_DICT_NAME_VAR} ${dictname} PARENT_SCOPE)
   endif()
 endfunction()

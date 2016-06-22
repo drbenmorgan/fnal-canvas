@@ -1,5 +1,4 @@
-include_directories(${cetlib_INCLUDEDIR})
-include_directories(${Boost_INCLUDE_DIR})
+# - Canvas Utilities library
 
 set(canvas_UTILITIES_HEADERS
    DebugMacros.h
@@ -38,11 +37,6 @@ add_library(canvas_Utilities
   ${canvas_UTILITIES_DETAIL_HEADERS}
   ${canvas_UTILITIES_SOURCES}
   )
-set_target_properties(canvas_Utilities
-  PROPERTIES
-    VERSION ${canvas_VERSION}
-    SOVERSION ${canvas_SOVERSION}
-  )
 
 # No usage requirements for Root dirs, so add them here,
 # but due to Root's broken CMake config file, this won't
@@ -51,25 +45,14 @@ target_include_directories(canvas_Utilities
   PRIVATE ${ROOT_INCLUDE_DIRS}
   )
 
-include(FindThreads)
+#include(FindThreads)
 
 target_link_libraries(canvas_Utilities
-  LINK_PUBLIC
-  MF_MessageLogger
-  MF_Utilities
+  PUBLIC
   fhiclcpp::fhiclcpp
   cetlib::cetlib
-  Threads::Threads
-  ${Boost_FILESYSTEM_LIBRARY}
-  ${Boost_REGEX_LIBRARY}
-  ${Boost_SYSTEM_LIBRARY}
-  ${Boost_THREAD_LIBRARY}
   ${ROOT_Core_LIBRARY}
-  ${ROOT_Thread_LIBRARY}
-  ${ROOT_Tree_LIBRARY}
-  ${ROOT_RIO_LIBRARY}
   ${TBB_LIBRARY_RELEASE}
-  ${CMAKE_DL_LIBS}
   )
 
 install(TARGETS canvas_Utilities

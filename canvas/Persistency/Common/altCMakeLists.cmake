@@ -1,8 +1,3 @@
-include_directories(${cetlib_INCLUDEDIR})
-include_directories(${fhiclcpp_INCLUDEDIR})
-include_directories(${CLHEP_INCLUDE_DIR})
-include_directories(${Boost_INCLUDE_DIR})
-
 # - Build canvas_Persistency_Common lib
 
 foreach(ART_IPR_BASE_NAME FindOne FindMany)
@@ -78,42 +73,34 @@ add_library(canvas_Persistency_Common SHARED
   )
 
 # Describe library include interface
-#target_include_directories(canvas_Persistency_Common
-#  PUBLIC
-#   ${ROOT_INCLUDE_DIRS}
-#   ${BOOST_INCLUDE_DIRS}
-#   )
+target_include_directories(canvas_Persistency_Common
+  PUBLIC
+   ${ROOT_INCLUDE_DIRS}
+   )
 
 # Describe library link interface
-IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 target_link_libraries(canvas_Persistency_Common
   PUBLIC
   canvas_Utilities
   canvas_Persistency_Provenance
+  cetlib::cetlib
   CLHEP::CLHEP
   ${ROOT_Core_LIBRARY}
-  ${Boost_THREAD_LIBRARY}
-  c++abi
-  )
-else()
-target_link_libraries(canvas_Persistency_Common
-  PUBLIC
-  canvas_Utilities
-  canvas_Persistency_Provenance
-  CLHEP::CLHEP
-  ${ROOT_Core_LIBRARY}
-  ${Boost_THREAD_LIBRARY}
+  Boost::boost
 )
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  target_link_libraries(canvas_Persistency_Common PRIVATE c++abi)
 endif()
 
-# Set any additional properties
-set_target_properties(canvas_Persistency_Common
-  PROPERTIES
-   VERSION ${canvas_VERSION}
-   SOVERSION ${canvas_SOVERSION}
-  )
-
 # - Dictify
+# At present, art_dictionary has no concept of target properties,
+# so MUST use include_directories for now - eventually need to use genexs, but that requires fiddling in dict generation
+include_directories(AFTER
+  ${ROOT_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
+  ${CLHEP_INCLUDE_DIRS}
+  ${cetlib_INCLUDE_DIRS})
 art_dictionary(DICTIONARY_LIBRARIES canvas_Persistency_Common)
 
 install(TARGETS canvas_Persistency_Common canvas_Persistency_Common_dict

@@ -1,45 +1,16 @@
-# - Art top level build
+# - Canvas top level build
 # Project setup
-# Require 2.8.12 to:
-# - get new interface export features
-# - target ALIAS
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.3.0)
 
 # - Policies - set all here as may influence project() call
-# Always id Clang as Clang, defer use of AppleClang id
-if(POLICY CMP0025)
-  cmake_policy(SET CMP0025 OLD)
-endif()
+# None needed as of v3.3.0
 
-# Always use rpath on Mac, as it's supported in out min version, and
-# CMake 3 and higher prefer it
-if(POLICY CMP0042)
-  cmake_policy(SET CMP0042 NEW)
-endif()
-
-project(canvas)
-
-#-----------------------------------------------------------------------
-# API and ABI versioning
-# NB - this only demonstrates that it *can* be done
-# More info on this at:
-# - http://public.kitware.com/Bug/view.php?id=4383
-# - http://techbase.kde.org/Policies/Binary_Compatibility_Issues_With_C++
-#
-# The following numbers are *arbitrary* for now. Remember that
-# VERSION and SOVERSION do not neccessarily evolve in sync
-# - Hard code version plus splits (derive one from t'other later)
-set(canvas_VERSION "1.03.01")
-set(canvas_VERSION_MAJOR 1)
-set(canvas_VERSION_MINOR 03)
-set(canvas_VERSION_PATCH 01)
-
-set(canvas_SOVERSION "1.0.0")
+project(canvas VERSION 1.3.1)
 
 # - We can also use a postfix to distinguish the debug lib from
 # others if different build modes are ABI incompatible (can be
 # extended to other modes)
-set(art_DEBUG_POSTFIX "d")
+set(canvas_DEBUG_POSTFIX "d")
 
 #-----------------------------------------------------------------------
 # Standard and Custom CMake Modules
@@ -48,48 +19,27 @@ set(art_DEBUG_POSTFIX "d")
 find_package(cetbuildtools2 0.1.0 REQUIRED)
 list(INSERT CMAKE_MODULE_PATH 0 ${cetbuildtools2_MODULE_PATH})
 include(CetInstallDirs)
-message(STATUS "CMAKE_INSTALL_CMAKEDIR : x${CMAKE_INSTALL_FHICLDIR}")
 include(CetCMakeSettings)
 include(CetCompilerSettings)
 
 # C++ Standard Config
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(canvas_COMPILE_FEATURES
   cxx_auto_type
   cxx_generic_lambdas
   )
 
-
+# - Our our modules
 list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_LIST_DIR}/Modules)
-
-# - Standard Support
-include(CMakePackageConfigHelpers)
-include(GNUInstallDirs)
-include(CheckCXXCompilerFlag)
-
-# - Local Customs
 include(artInternalTools)
 include(artTools)
 include(ArtDictionary)
 
-# - Build product locations
-# The variables CMAKE_{RUNTIME,LIBRARY,ARCHIVE}_OUTPUT_DIRECTORY can
-# be used to specify where executables, dynamic and static libraries
-# are output. They initialize the {RUNTIME,LIBRARY,ARCHIVE}_OUTPUT_DIRECTORY
-# properties of targets added via add_{executable,target}, so can
-# targets can override if need be.
-#
-# - Assume for now that GNUInstallDirs provides relative (to
-#   CMAKE_INSTALL_PREFIX) paths, and reflect this layout in the
-#   output directories. This should be o.k. even on DLL platforms
-#   as CMake should output these to the RUNTIME directory.
-#
+# Temp fix to override flavorqual_dir
 set(BASE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/BuildProducts")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${BASE_OUTPUT_DIRECTORY}/${CMAKE_INSTALL_BINDIR}")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${BASE_OUTPUT_DIRECTORY}/${CMAKE_INSTALL_LIBDIR}")
-set(LIBRARY_OUTPUT_PATH "${BASE_OUTPUT_DIRECTORY}/${CMAKE_INSTALL_LIBDIR}")
 set(flavorqual_dir "${BASE_OUTPUT_DIRECTORY}/${CMAKE_INSTALL_LIBDIR}")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${BASE_OUTPUT_DIRECTORY}/${CMAKE_INSTALL_LIBDIR}")
 
 # Implement SSE2 as option?
 #cet_have_qual(sse2 SSE2)
@@ -121,8 +71,8 @@ find_package(Boost ${canvas_MIN_BOOST_VERSION}
     date_time
     unit_test_framework
     program_options
+    thread
   )
-
 
 # CLHEP supplies a CMake project config...
 find_package(CLHEP 2.3.2.2 REQUIRED)
@@ -164,6 +114,7 @@ add_subdirectory(Modules)
 #-----------------------------------------------------------------------
 # Install support files - usage from install tree only...
 #
+include(CMakePackageConfigHelpers)
 configure_package_config_file(
   Modules/canvasConfig.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/canvasConfig.cmake

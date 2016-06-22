@@ -7,11 +7,6 @@ add_library(canvas_Version SHARED
   GetReleaseVersion.h
   ${CMAKE_CURRENT_BINARY_DIR}/GetReleaseVersion.cc
   )
-set_target_properties(canvas_Version
-  PROPERTIES
-    VERSION ${canvas_VERSION}
-    SOVERSION ${canvas_SOVERSION}
-  )
 
 #-----------------------------------------------------------------------
 # Install lib and dev

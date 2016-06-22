@@ -1,5 +1,3 @@
-include_directories(${cetlib_INCLUDEDIR})
-include_directories(${Boost_INCLUDE_DIR})
 
 # - Build canvas_Persistency_Provenance lib
 # Define headers
@@ -107,20 +105,13 @@ target_include_directories(canvas_Persistency_Provenance
 target_link_libraries(canvas_Persistency_Provenance
   LINK_PUBLIC
    canvas_Utilities
-   MF_MessageLogger
+   messagefacility::MF_MessageLogger
    cetlib::cetlib
   LINK_PRIVATE
    ${BOOST_THREAD_LIBRARY}
   )
 
-# Set any additional properties
-set_target_properties(canvas_Persistency_Provenance
-  PROPERTIES
-   VERSION ${canvas_VERSION}
-   SOVERSION ${canvas_SOVERSION}
-  )
-
-install(TARGETS canvas_Persistency_Provenance 
+install(TARGETS canvas_Persistency_Provenance
   EXPORT CanvasLibraries
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
