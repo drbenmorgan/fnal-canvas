@@ -10,5 +10,5 @@ add_subdirectory(Persistency/Common)
 add_subdirectory(Persistency/Provenance)
 add_subdirectory(Version)
 add_subdirectory(Utilities)
-#add_subdirectory(tbb)
+add_subdirectory(tbb)
 
