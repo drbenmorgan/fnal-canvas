@@ -1,3 +1,7 @@
+if (ALT_CMAKE)
+include(altCMakeLists.cmake)
+else()
+
 cet_make(SUBDIRS detail
   LIBRARIES
   canvas_Utilities
@@ -10,3 +14,5 @@ art_dictionary()
 
 install_headers(SUBDIRS detail)
 install_source(SUBDIRS detail)
+
+endif()

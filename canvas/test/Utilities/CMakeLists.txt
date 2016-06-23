@@ -1,3 +1,7 @@
+if (ALT_CMAKE)
+include(altCMakeLists.cmake)
+else()
+
 # cet_test macro
 
 art_dictionary(NO_DEFAULT_LIBRARIES DICTIONARY_LIBRARIES cetlib NO_INSTALL)
@@ -64,3 +68,5 @@ foreach(types_file
     )
   math(EXPR tnum "${tnum} + 1")
 endforeach()
+
+endif()

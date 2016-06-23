@@ -1,3 +1,7 @@
+if (ALT_CMAKE)
+include(altCMakeLists.cmake)
+else()
+
 # ======================================================================
 #  art main build file
 #
@@ -60,7 +64,7 @@ include(ArtDictionary)
 
 # source
 add_subdirectory (canvas)
-
+add_subdirectory (tools)
 
 # ups - table and config files
 add_subdirectory(ups)
@@ -70,3 +74,5 @@ add_subdirectory(Modules)
 
 # packaging utility
 include(UseCPack)
+
+endif()

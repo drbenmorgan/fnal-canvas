@@ -1,3 +1,7 @@
+if (ALT_CMAKE)
+include(altCMakeLists.cmake)
+else()
+
 # project name
 project(canvas_Version)
 
@@ -10,3 +14,5 @@ cet_make_library( LIBRARY_NAME canvas_Version
 
 install_headers()
 install_source()
+
+endif()

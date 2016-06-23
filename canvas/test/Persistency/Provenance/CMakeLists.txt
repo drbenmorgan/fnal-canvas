@@ -1,3 +1,7 @@
+if (ALT_CMAKE)
+include(altCMakeLists.cmake)
+else()
+
 set(CMAKE_MODULE_PATH
   ${CMAKE_MODULE_PATH}
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -52,6 +56,16 @@ cet_test(RootClassMapping_t USE_BOOST_UNIT
   TEST_PROPERTIES WILL_FAIL true
   )
 
+cet_test(EventRange_t USE_BOOST_UNIT
+  LIBRARIES
+  canvas_Persistency_Provenance
+  )
+
+cet_test(RangeSet_t USE_BOOST_UNIT
+  LIBRARIES
+  canvas_Persistency_Provenance
+  )
+
 cet_test(TypeTools_t USE_BOOST_UNIT
   LIBRARIES
   canvas_Persistency_Provenance
@@ -79,3 +93,4 @@ cet_test(TypeWithDict_t USE_BOOST_UNIT
   ${ROOT_CORE}
   )
 
+endif()
