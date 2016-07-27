@@ -1,3 +1,8 @@
+# - When user supplies "-DALT_CMAKE" use the non-CET/UPS system
+if(ALT_CMAKE)
+  include(altCMakeLists.cmake)
+else()
+
 include(CetMake)
 
 # cmake will automatically order the library builds according to declared dependencies
@@ -6,3 +11,5 @@ add_subdirectory (Utilities)
 add_subdirectory (Persistency)
 # Testing
 add_subdirectory(test)
+
+endif() # ALT_CMAKE
