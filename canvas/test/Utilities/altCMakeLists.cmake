@@ -1,17 +1,15 @@
-if(ALT_CMAKE)
-  include(altCMakeLists.cmake)
-else()
-# cet_test macro
-
-art_dictionary(NO_DEFAULT_LIBRARIES DICTIONARY_LIBRARIES cetlib NO_INSTALL)
+#
+# Front end inclusion to ensure genrefelx finds headers. Awaits support for
+# genexs in art/build_dictionary
+include_directories(${cetlib_INCLUDE_DIRS})
+include_directories(${ROOT_INCLUDE_DIRS})
+art_dictionary(NO_DEFAULT_LIBRARIES DICTIONARY_LIBRARIES cetlib::cetlib ${ROOT_Core_LIBRARY} NO_INSTALL)
 
 set(default_canvas_test_libraries
   canvas_Utilities
   canvas_test_Utilities_dict
-  cetlib
-  MF_MessageLogger
-  ${ROOT_CINT}
-  ${ROOT_REFLEX}
+  cetlib::cetlib
+  ${ROOT_Core_LIBRARY}
   )
 
 cet_test(InputTag_t USE_BOOST_UNIT
@@ -41,11 +39,10 @@ cet_test(uniform_type_name_test USE_BOOST_UNIT
   canvas_Utilities
   )
 
-cet_make_exec(TypeNameBranchName_t
-  NO_INSTALL
-  LIBRARIES
+add_executable(TypeNameBranchName_t TypeNameBranchName_t.h TypeNameBranchName_t.cc)
+target_link_libraries(TypeNameBranchName_t
   canvas_Utilities
-  cetlib
+  cetlib::cetlib
 )
 
 set(tnum 1)
@@ -64,8 +61,8 @@ foreach(types_file
   cet_test(TypeNameBranchName_test_${tnum_text} HANDBUILT
     TEST_EXEC TypeNameBranchName_t
     TEST_ARGS ${CMAKE_CURRENT_SOURCE_DIR}/TypeNameBranchName_t/${types_file}
+    TEST_PROPERTIES ENVIRONMENT PATH=$<TARGET_FILE_DIR:TypeNameBranchName_t>:$ENV{PATH}
     )
   math(EXPR tnum "${tnum} + 1")
 endforeach()
 
-endif()

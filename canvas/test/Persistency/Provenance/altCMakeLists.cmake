@@ -1,6 +1,4 @@
-if(ALT_CMAKE)
-  include(altCMakeLists.cmake)
-else()
+include_directories(${CPPUNIT_INCLUDE_DIR})
 
 set(CMAKE_MODULE_PATH
   ${CMAKE_MODULE_PATH}
@@ -13,12 +11,6 @@ set(standard_libraries
   canvas_Persistency_Provenance
   canvas_Utilities
   canvas_Version
-  ${Boost_THREAD_LIBRARY}
-  ${ROOT_CINTEX}
-  ${ROOT_CORE}
-  ${ROOT_CINT}
-  ${ROOT_REFLEX}
-  ${CMAKE_DL_LIBS}
   )
 
 cet_test(EventID_t USE_BOOST_UNIT
@@ -29,7 +21,7 @@ file(GLOB cppunit_files *.cppunit.cc)
 foreach(cppunit_source ${cppunit_files})
   get_filename_component(test_name ${cppunit_source} NAME_WE )
   cet_test(${test_name} SOURCES testRunner.cpp ${cppunit_source}
-    LIBRARIES ${CPPUNIT} ${standard_libraries}
+    LIBRARIES ${CPPUNIT_LIBRARY} ${standard_libraries}
     )
 endforeach()
 
@@ -41,16 +33,8 @@ endforeach()
 cet_test(RootClassMapping_t USE_BOOST_UNIT
   LIBRARIES
   canvas_test_Persistency_Provenance_dict
-  ${ROOT_CINTEX}
-  ${ROOT_TREE}
-  ${ROOT_NET}
-  ${ROOT_MATHCORE}
-  ${ROOT_RIO}
-  ${ROOT_THREAD}
-  ${ROOT_CORE}
-  ${ROOT_CINT}
-  ${ROOT_REFLEX}
-  ${CMAKE_DL_LIBS}
+  ${ROOT_Tree_LIBRARY}
+  ${ROOT_RIO_LIBRARY}
   # When ROOT is fixed WILL_FAIL should be removed and the code in ASSNS
   # (and associated ioread rules) should be fixed accordingly.
   TEST_PROPERTIES WILL_FAIL true
@@ -69,27 +53,13 @@ cet_test(RangeSet_t USE_BOOST_UNIT
 cet_test(TypeTools_t USE_BOOST_UNIT
   LIBRARIES
   canvas_Persistency_Provenance
+  canvas_Persistency_Common # To pick up Wrapper.h, hence CLHEP headers
   canvas_Utilities
-  ${Boost_FILESYSTEM_LIBRARY}
-  ${Boost_PROGRAM_OPTIONS_LIBRARY}
-  ${ROOT_TREE}
-  ${ROOT_HIST}
-  ${ROOT_MATRIX}
-  ${ROOT_NET}
-  ${ROOT_MATHCORE}
-  ${ROOT_THREAD}
-  ${ROOT_RIO}
-  ${ROOT_CORE}
-  ${ROOT_CINT}
-  ${ROOT_REFLEX}
-  ${CPPUNIT}
-  ${CMAKE_DL_LIBS}
   )
 
 cet_test(TypeWithDict_t USE_BOOST_UNIT
   LIBRARIES
   canvas_Persistency_Provenance
   canvas_Utilities
-  ${ROOT_CORE}
   )
-endif()
+
