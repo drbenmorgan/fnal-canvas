@@ -66,8 +66,6 @@ if(NOT ROOT_python_FOUND)
 endif()
 
 find_package(cetlib 1.17.4 REQUIRED)
-# TMP: fixup include dirs...
-set(cetlib_INCLUDE_DIRS ${cetlib_INCLUDEDIR})
 
 find_package(fhiclcpp 3.18.4 REQUIRED)
 find_package(messagefacility 1.16.28 REQUIRED)

@@ -1,4 +1,4 @@
-include_directories(${fhiclcpp_INCLUDEDIR})
+include_directories(${fhiclcpp_INCLUDE_DIR})
 include_directories(${cetlib_INCLUDEDIR})
 include_directories(${Boost_INCLUDE_DIR})
 
