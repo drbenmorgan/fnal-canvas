@@ -23,19 +23,6 @@ set(canvas_COMPILE_FEATURES
 
 # - Our our modules
 list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_LIST_DIR}/Modules)
-#include(artInternalTools)
-#include(artTools)
-include(ArtDictionary)
-
-# Temp fix to override flavorqual_dir
-#set(BASE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/BuildProducts")
-#set(flavorqual_dir "${BASE_OUTPUT_DIRECTORY}/${CMAKE_INSTALL_LIBDIR}")
-
-# Implement SSE2 as option (TODO: IN CETBUILDTOOLS2)
-#cet_have_qual(sse2 SSE2)
-#if ( SSE2 )
-#  cet_add_compiler_flags(CXX -msse2 -ftree-vectorizer-verbose=2)
-#endif()
 
 #-----------------------------------------------------------------------
 # Required Third Party Packages
@@ -66,19 +53,21 @@ if(NOT ROOT_python_FOUND)
 endif()
 
 find_package(cetlib 1.17.4 REQUIRED)
-
 find_package(fhiclcpp 3.18.4 REQUIRED)
 find_package(messagefacility 1.16.28 REQUIRED)
-
-# Need to implement
 find_package(TBB 4.4.3 REQUIRED)
 
 #-----------------------------------------------------------------------
-# Set up paths for all subbuilds
-#
+# Set up paths and modules for all subbuilds
+# - Inclusion of ArtDictonary performs a check on ROOT, so muct be included
+# after root has been found (probably need to macro/function-ize that check)
+include(ArtDictionary)
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_BINARY_DIR})
 
 # source
 add_subdirectory(canvas)
+
+# tools
+add_subdirectory(Modules)
 
