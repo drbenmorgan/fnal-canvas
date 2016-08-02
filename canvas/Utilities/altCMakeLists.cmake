@@ -56,7 +56,7 @@ target_link_libraries(canvas_Utilities
   )
 
 install(TARGETS canvas_Utilities
-  EXPORT CanvasLibraries
+  EXPORT ${PROJECT_NAME}Targets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

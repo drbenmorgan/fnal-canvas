@@ -6,7 +6,7 @@ art_dictionary(DICTIONARY_LIBRARIES fhiclcpp::fhiclcpp cetlib::cetlib NO_CHECK_C
 
 install(TARGETS
   canvas_Persistency_FhiclCppDictionaries_dict
-  EXPORT CanvasLibraries
+  EXPORT ${PROJECT_NAME}Targets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

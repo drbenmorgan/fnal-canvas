@@ -5,7 +5,7 @@ include_directories(${CLHEP_INCLUDE_DIR})
 art_dictionary()
 
 install(TARGETS canvas_Persistency_WrappedStdDictionaries_dict
-  EXPORT CanvasLibraries
+  EXPORT ${PROJECT_NAME}Targets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

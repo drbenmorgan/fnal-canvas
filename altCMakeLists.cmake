@@ -39,12 +39,20 @@ find_package(Boost 1.60.0
 # CLHEP supplies a CMake project config...
 find_package(CLHEP 2.3.2.2 REQUIRED)
 
-# SQLite3 - NB messagefacility also depends on and exposes this...
+# SQLite3 - NB fhiclcpp/messagefacility also depend on and expose this...
+# Because we use exatc versions, this should ensure consistency (though
+# that is more a task for higher level CM). Nevertheless, should check
+# that CMake will error out if we try to find same package twice with
+# different EXACT versions
 find_package(SQLite 3.8.5 REQUIRED)
 
 # Cross check with what ROOT supply - ideally would like component
 # based checks.
 find_package(ROOT 6.06.04 REQUIRED)
+# ROOT's version from UPS/FindROOT might be funky, "6.06/04" so
+# remove slashes
+string(REPLACE "/" "." ROOT_VERSION "${ROOT_VERSION}")
+
 # - Must have Python support - it doesn't work as a COMPONENT
 # argument to find_package because Root's component lookup only
 # works for libraries.
@@ -55,7 +63,13 @@ endif()
 find_package(cetlib 1.17.4 REQUIRED)
 find_package(fhiclcpp 3.18.4 REQUIRED)
 find_package(messagefacility 1.16.28 REQUIRED)
-find_package(TBB 4.4.3 REQUIRED)
+
+# NB: TBB doesn't really have the concept of patch version internally
+# Marketed as "MAJOR.MINOR Update N", but N is not in any versioning info?
+# Also have TBB_INTERFACE_VERSION and TBB_INTERFACE_VERSION_MAJOR
+# These may be more fundamental to API/ABI
+# Also, FindTBB at present doesn't implement strict version checking
+find_package(TBB 4.4 REQUIRED)
 
 #-----------------------------------------------------------------------
 # Set up paths and modules for all subbuilds

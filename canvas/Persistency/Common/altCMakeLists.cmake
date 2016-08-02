@@ -103,7 +103,7 @@ include_directories(AFTER
 art_dictionary(DICTIONARY_LIBRARIES canvas_Persistency_Common)
 
 install(TARGETS canvas_Persistency_Common canvas_Persistency_Common_dict
-  EXPORT CanvasLibraries
+  EXPORT ${PROJECT_NAME}Targets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
