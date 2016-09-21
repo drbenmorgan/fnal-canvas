@@ -52,6 +52,14 @@ include(CheckClassVersion)
 include(BuildDictionary)
 include(CMakeParseArguments)
 
+# Target names at use time are namespaced...
+# TEMP hack - use an interface target and function later on...
+if(PROJECT_NAME STREQUAL "canvas")
+  set(CANVAS_NAMESPACE "")
+else()
+  set(CANVAS_NAMESPACE "canvas::")
+endif()
+
 function(art_dictionary)
   cmake_parse_arguments(AD
     "UPDATE_IN_PLACE;DICT_FUNCTIONS;USE_PRODUCT_NAME;NO_CHECK_CLASS_VERSION;NO_DEFAULT_LIBRARIES"
@@ -62,7 +70,10 @@ function(art_dictionary)
 
   if(NOT AD_NO_DEFAULT_LIBRARIES)
     set(AD_DICTIONARY_LIBRARIES
-      canvas_Persistency_Common canvas_Persistency_Provenance canvas_Utilities cetlib::cetlib ${AD_DICTIONARY_LIBRARIES}
+      ${CANVAS_NAMESPACE}canvas_Persistency_Common
+      ${CANVAS_NAMESPACE}canvas_Persistency_Provenance
+      ${CANVAS_NAMESPACE}canvas_Utilities
+      cetlib::cetlib ${AD_DICTIONARY_LIBRARIES}
       )
   endif()
 
