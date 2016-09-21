@@ -1,7 +1,10 @@
-add_subdirectory (Version)
-add_subdirectory (Utilities)
-add_subdirectory (Persistency)
+# Build sublibs
+add_subdirectory(Version)
+add_subdirectory(Utilities)
+add_subdirectory(Persistency)
 
+#-----------------------------------------------------------------------
+# Testing, if required
 if(BUILD_TESTING)
   add_subdirectory(test)
 endif()

@@ -54,8 +54,9 @@ endfunction()
 # set by those functions.
 macro(check_class_version)
   cmake_parse_arguments(CCV
+    "UPDATE_IN_PLACE;RECURSIVE;NO_RECURSIVE"
+    ""
     "LIBRARIES;REQUIRED_DICTIONARIES"
-    "UPDATE_IN_PLACE"
     ${ARGN}
     )
   if(CCV_LIBRARIES)
@@ -65,6 +66,20 @@ macro(check_class_version)
 
   if(CCV_UPDATE_IN_PLACE)
     set(CCV_EXTRA_ARGS ${CCV_EXTRA_ARGS} "-G")
+  endif()
+
+  if(NOT dictname)
+    message(FATAL_ERROR "CHECK_CLASS_VERSION must be called after BUILD_DICTIONARY.")
+  endif()
+
+  if(CCV_RECURSIVE)
+    set(CCV_EXTRA_ARGS ${CCV_EXTRA_ARGS} "--recursive")
+  elseif (CCV_NO_RECURSIVE)
+    set(CCV_EXTRA_ARGS ${CCV_EXTRA_ARGS} "--no-recursive")
+  elseif (CCV_DEFAULT_RECURSIVE)
+    set(CCV_EXTRA_ARGS ${CCV_EXTRA_ARGS} "--recursive")
+  else()
+    set(CCV_EXTRA_ARGS ${CCV_EXTRA_ARGS} "--no-recursive")
   endif()
 
   if(NOT dictname)

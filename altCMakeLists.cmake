@@ -3,6 +3,10 @@
 cmake_minimum_required(VERSION 3.3.0)
 project(canvas VERSION 1.4.2)
 
+# CMAKE_MODULE_PATH not picked up from the environemnt?
+list(INSERT CMAKE_MODULE_PATH 0 $ENV{CMAKE_MODULE_PATH})
+
+
 # - Cetbuildtools, version2
 find_package(cetbuildtools2 0.1.0 REQUIRED)
 list(INSERT CMAKE_MODULE_PATH 0 ${cetbuildtools2_MODULE_PATH})
@@ -23,6 +27,7 @@ set(canvas_COMPILE_FEATURES
 
 # - Our our modules
 list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_LIST_DIR}/Modules)
+
 
 #-----------------------------------------------------------------------
 # Required Third Party Packages
@@ -61,7 +66,7 @@ if(NOT ROOT_python_FOUND)
 endif()
 
 find_package(cetlib 1.17.4 REQUIRED)
-find_package(fhiclcpp 3.18.4 REQUIRED)
+find_package(fhiclcpp 4.0 REQUIRED)
 find_package(messagefacility 1.16.28 REQUIRED)
 
 # NB: TBB doesn't really have the concept of patch version internally

@@ -1,42 +1,29 @@
 # - Canvas Utilities library
 
-set(canvas_UTILITIES_HEADERS
-   DebugMacros.h
-   ensurePointer.h
-   Exception.h
-   FriendlyName.h
-   fwd.h
-   GetCanvasReleaseVersion.h
-   GetPassID.h
-   InputTag.h
-   TestHelper.h
-   TypeID.h
-   uniform_type_name.h
-   WrappedClassName.h
-  )
-
-set(canvas_UTILITIES_DETAIL_HEADERS
-   detail/metaprogramming.h
-  )
-
 set(canvas_UTILITIES_SOURCES
-   DebugMacros.cc
-   Exception.cc
-   FriendlyName.cc
-   InputTag.cc
-   TestHelper.cc
-   TypeID.cc
-   uniform_type_name.cc
-   WrappedClassName.cc
+  DebugMacros.cc
+  DebugMacros.h
+  Exception.cc
+  Exception.h
+  FriendlyName.cc
+  FriendlyName.h
+  GetCanvasReleaseVersion.h
+  GetPassID.h
+  InputTag.cc
+  InputTag.h
+  TestHelper.cc
+  TestHelper.h
+  TypeID.cc
+  TypeID.h
+  WrappedClassName.cc
+  WrappedClassName.h
+  ensurePointer.h
+  fwd.h
+  uniform_type_name.cc
+  uniform_type_name.h
   )
 
-
-add_library(canvas_Utilities
-  SHARED
-  ${canvas_UTILITIES_HEADERS}
-  ${canvas_UTILITIES_DETAIL_HEADERS}
-  ${canvas_UTILITIES_SOURCES}
-  )
+add_library(canvas_Utilities SHARED ${canvas_UTILITIES_SOURCES})
 
 # No usage requirements for Root dirs, so add them here,
 # but due to Root's broken CMake config file, this won't
@@ -62,12 +49,11 @@ install(TARGETS canvas_Utilities
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   COMPONENT Runtime
   )
-install(FILES ${canvas_UTILITIES_HEADERS}
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/canvas/Utilities
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}/Utilities
   COMPONENT Development
-  )
-install(FILES ${canvas_UTILITIES_DETAIL_HEADERS}
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/canvas/Utilities/detail
-  COMPONENT Development
+  FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp" PATTERN "*.icc"
+  PATTERN "classes.h" EXCLUDE
   )
 

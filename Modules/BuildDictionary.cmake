@@ -51,12 +51,19 @@ set(HAVE_ROOT6 1)
 #  message(FATAL_ERROR "build_dictionary: missing ROOT classification variables.")
 #endif()
 
+# FindROOT/ROOTConfig set path to genreflex differently
+if(ROOT_genreflex_CMD)
+  set(BD_ROOT_genreflex_CMD "${ROOT_genreflex_CMD}")
+elseif(GENREFLEX_EXECUTABLE)
+  set(BD_ROOT_genreflex_CMD "${GENREFLEX_EXECUTABLE}")
+endif()
+
 if(HAVE_ROOT6)
   set(BD_WANT_ROOTMAP TRUE)
   set(BD_WANT_PCM TRUE)
   set(GENREFLEX_FLAGS --fail_on_warnings)
 
-  # Where doe this var come from?
+  # Where does this var come from?
   if(ROOT6_HAS_NOINCLUDEPATHS)
     list(APPEND GENREFLEX_FLAGS --noIncludePaths)
   endif()
@@ -139,7 +146,7 @@ function(_generate_dictionary dictname)
   add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${dictname}_dict.cpp
     ${SOURCE_OUTPUT} ${GD_ROOTMAP_OUTPUT} ${PCM_OUTPUT}
-    COMMAND ${ROOT_genreflex_CMD} ${CMAKE_CURRENT_SOURCE_DIR}/classes.h
+    COMMAND ${BD_ROOT_genreflex_CMD} ${CMAKE_CURRENT_SOURCE_DIR}/classes.h
     -s ${CMAKE_CURRENT_SOURCE_DIR}/classes_def.xml
 		-I${CMAKE_SOURCE_DIR}
 		${GENREFLEX_INCLUDES} ${GENREFLEX_FLAGS}
@@ -180,10 +187,6 @@ function(build_dictionary)
     endif()
   endif()
 
-  if(ART_VERSION AND NOT BD_NO_CHECK_CLASS_VERSION)
-    check_ups_version(art ${ART_VERSION} v1_19_00 PRODUCT_OLDER_VAR BD_NO_CHECK_CLASS_VERSION)
-    # Older versions of art do their own invocation of checkClassVersion.
-  endif()
 
   if(BD_DICT_NAME_VAR)
     set(${BD_DICT_NAME_VAR} ${dictname} PARENT_SCOPE)
@@ -269,9 +272,10 @@ function(build_dictionary)
 
   add_dependencies(BuildDictionary_AllDicts ${dictname}_dict)
 
-  if(BD_NO_CHECK_CLASS_VERSION)
+  if(BD_NO_CHECK_CLASS_VERSION OR NOT DEFINED CCV_DEFAULT_RECURSIVE)
+    # Turned off manually, or we're using or building an older art.
     if(BD_UPDATE_IN_PLACE OR BD_REQUIRED_DICTIONARIES OR RECURSIVE OR NO_RECURSIVE)
-      message(WARNING "BuildDictionary: NO_CHECK_CLASS_VERSION is set: UPDATE_IN_PLACE and REQUIRED_DICTIONARIES are ignored.")
+      message(WARNING "BuildDictionary: NO_CHECK_CLASS_VERSION is set: UPDATE_IN_PLACE, REQUIRED_DICTIONARIES, RECURSIVE and NO_RECURSIVE are ignored.")
     endif()
   else()
     if(BD_UPDATE_IN_PLACE)
