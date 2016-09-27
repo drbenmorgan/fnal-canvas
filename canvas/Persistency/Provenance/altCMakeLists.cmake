@@ -111,6 +111,9 @@ target_link_libraries(canvas_Persistency_Provenance
    ${BOOST_THREAD_LIBRARY}
   )
 
+include_directories(${cetlib_INCLUDE_DIRS})
+art_dictionary()
+
 install(TARGETS canvas_Persistency_Provenance
   EXPORT ${PROJECT_NAME}Targets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
