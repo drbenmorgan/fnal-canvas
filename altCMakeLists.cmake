@@ -3,10 +3,6 @@
 cmake_minimum_required(VERSION 3.3.0)
 project(canvas VERSION 1.4.2)
 
-# CMAKE_MODULE_PATH not picked up from the environemnt?
-list(INSERT CMAKE_MODULE_PATH 0 $ENV{CMAKE_MODULE_PATH})
-
-
 # - Cetbuildtools, version2
 find_package(cetbuildtools2 0.1.0 REQUIRED)
 list(INSERT CMAKE_MODULE_PATH 0 ${cetbuildtools2_MODULE_PATH})
