@@ -6,13 +6,15 @@ else()
 art_dictionary(NO_DEFAULT_LIBRARIES DICTIONARY_LIBRARIES cetlib NO_INSTALL)
 
 set(default_canvas_test_libraries
-  canvas_Utilities
+  canvas
   canvas_test_Utilities_dict
   cetlib
   MF_MessageLogger
   ${ROOT_CINT}
   ${ROOT_REFLEX}
   )
+
+cet_test(Level_t)
 
 cet_test(InputTag_t USE_BOOST_UNIT
   LIBRARIES ${default_canvas_test_libraries}
@@ -38,13 +40,13 @@ cet_test(ensurePointer_t USE_BOOST_UNIT
 
 cet_test(uniform_type_name_test USE_BOOST_UNIT
   LIBRARIES
-  canvas_Utilities
+  canvas
   )
 
 cet_make_exec(TypeNameBranchName_t
   NO_INSTALL
   LIBRARIES
-  canvas_Utilities
+  canvas
   cetlib
 )
 
@@ -67,5 +69,16 @@ foreach(types_file
     )
   math(EXPR tnum "${tnum} + 1")
 endforeach()
+
+cet_make_exec(EventIDMatcher_t
+  NO_INSTALL
+  LIBRARIES
+  canvas
+  cetlib
+)
+
+cet_test(EventIDMatcher_test HANDBUILT
+  TEST_EXEC EventIDMatcher_t
+)
 
 endif()

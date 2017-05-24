@@ -2,19 +2,25 @@ if(ALT_CMAKE)
   include(altCMakeLists.cmake)
 else()
 
+art_dictionary(NO_INSTALL)
+
+cet_test(test_ConstAssnIter
+  LIBRARIES canvas
+  )
+
 cet_test(aggregate_t USE_BOOST_UNIT
-  LIBRARIES canvas_Persistency_Common
+  LIBRARIES canvas
   )
 
 cet_test(aggregate_clhep_t USE_BOOST_UNIT
   LIBRARIES
-  canvas_Persistency_Common
+  canvas
   ${CLHEP}
   )
 
 cet_test(aggregate_th1_t USE_BOOST_UNIT
   LIBRARIES
-  canvas_Persistency_Common
+  canvas
   cetlib
   ${ROOT_HIST}
   )

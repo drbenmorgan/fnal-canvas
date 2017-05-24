@@ -70,10 +70,10 @@ function(art_dictionary)
 
   if(NOT AD_NO_DEFAULT_LIBRARIES)
     set(AD_DICTIONARY_LIBRARIES
-      ${CANVAS_NAMESPACE}canvas_Persistency_Common
-      ${CANVAS_NAMESPACE}canvas_Persistency_Provenance
-      ${CANVAS_NAMESPACE}canvas_Utilities
-      cetlib::cetlib ${AD_DICTIONARY_LIBRARIES}
+      ${CANVAS_NAMESPACE}canvas
+      cetlib::cetlib
+      cetlib_except::cetlib_except
+      ${AD_DICTIONARY_LIBRARIES}
       )
   endif()
 

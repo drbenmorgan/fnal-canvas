@@ -21,18 +21,11 @@ namespace art {
 class art::PtrVectorBase {
 public:
   typedef unsigned long key_type;
-#if 0
-protected:
-#endif
   typedef std::vector<key_type> indices_t;
 public:
   typedef indices_t::size_type size_type;
 
-  virtual ~PtrVectorBase()
-#ifndef __GCCXML__
-  = default
-#endif
-    ;
+  virtual ~PtrVectorBase() = default;
 
   // Observers
   bool isNonnull() const;
@@ -45,24 +38,19 @@ public:
   void setProductGetter(EDProductGetter *g) const;
 
 protected:
-  PtrVectorBase()
-#ifndef __GCCXML__
-  = default
-#endif
-    ;
+  PtrVectorBase() = default;
 
   void clear();
-  void reserve(size_type n);
   void swap(PtrVectorBase &);
-  void fillPtrs() const;
   void updateCore(RefCore const &core);
-
-  template <typename T>
-  typename Ptr<T>::key_type key(Ptr<T> const &ptr) const;
-
   bool operator==(PtrVectorBase const &) const;
 
 private:
+  void reserve(size_type n);
+  void fillPtrs() const;
+  template <typename T>
+  typename Ptr<T>::key_type key(Ptr<T> const &ptr) const;
+
   RefCore core_;
   mutable indices_t indicies_; // Will be zeroed-out by fillPtrs();
 
@@ -73,7 +61,6 @@ private:
   friend class art::detail::PtrVectorBaseStreamer;
 }; // PtrVectorBase
 
-#ifndef __GCCXML__
 inline bool
 art::PtrVectorBase::isNonnull() const {
   return core_.isNonnull();
@@ -121,11 +108,6 @@ art::PtrVectorBase::swap(PtrVectorBase &other) {
   core_.swap(other.core_);
 }
 
-inline void
-art::PtrVectorBase::updateCore(RefCore const &core) {
-  core_.pushBackItem(core);
-}
-
 template <typename T>
 inline
 typename art::Ptr<T>::key_type
@@ -140,7 +122,6 @@ operator==(PtrVectorBase const &other) const {
   return core_ == other.core_;
 }
 
-#endif /* __GCCXML__ */
 #endif /* canvas_Persistency_Common_PtrVectorBase_h */
 
 // Local Variables:

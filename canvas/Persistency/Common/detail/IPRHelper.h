@@ -57,41 +57,42 @@ namespace art {
     public:
       BcollHelper(InputTag const & assnsTag);
       template <typename Bcoll>
-      void init(size_t size, Bcoll & bColl) const;
+      void init(size_t size, Bcoll & bColl);
 
       // 1. When Bcoll is a collection of pointer to const B -- one to one.
       template <typename Bcoll>
-      typename std::enable_if<std::is_same<typename Bcoll::value_type, ProdB const *>::value>::type
+      std::enable_if_t<std::is_same<typename Bcoll::value_type, ProdB const *>::value>
       fill(size_t index,
            Ptr<ProdB> const & item,
-           Bcoll & bColl) const;
+           Bcoll & bColl);
 
       // 2. When Bcoll is a collection of Ptr<B> -- one to one.
       template <typename Bcoll>
-      typename std::enable_if<std::is_convertible<typename Bcoll::value_type, Ptr<ProdB> >::value>::type
+      std::enable_if_t<std::is_convertible<typename Bcoll::value_type, Ptr<ProdB> >::value>
       fill(size_t index,
            Ptr<ProdB> const & item,
-           Bcoll & bColl) const;
+           Bcoll & bColl);
 
       template <typename Bcoll>
       void init(size_t size, std::vector<Bcoll> & bColls) const;
 
       // 3. When Bcoll is a collection of pointer to const B -- one to many.
       template <typename Bcoll>
-      typename std::enable_if<std::is_same<typename Bcoll::value_type, ProdB const *>::value>::type
+      std::enable_if_t<std::is_same<typename Bcoll::value_type, ProdB const *>::value>
       fill(size_t index,
            Ptr<ProdB> const & item,
            std::vector<Bcoll> & bColls) const;
 
       // 4. When Bcoll is a collection of Ptr<B> -- one to many.
       template <typename Bcoll>
-      typename std::enable_if<std::is_convertible<typename Bcoll::value_type, Ptr<ProdB> >::value>::type
+      std::enable_if_t<std::is_convertible<typename Bcoll::value_type, Ptr<ProdB> >::value>
       fill(size_t index,
            Ptr<ProdB> const & item,
            std::vector<Bcoll> & bColls) const;
 
     private:
       InputTag const & assnsTag_;
+      std::vector<uint8_t> seen_;
     };
   }
 }
@@ -101,7 +102,7 @@ class art::detail::IPRHelper {
 private:
 
   // We use IPRHelperDef in place of DATACOLL if Data is void.
-  typedef typename std::conditional<std::is_void<Data>::value, IPRHelperDef, DATACOLL>::type dataColl_t;
+  typedef std::conditional_t<std::is_void<Data>::value, IPRHelperDef, DATACOLL> dataColl_t;
 
 public:
   typedef std::shared_ptr<art::Exception const> shared_exception_t;
@@ -149,7 +150,7 @@ operator()(Acoll const & aColl, Bcoll & bColl) const
 // item in the association collection matches that of the item in the
 // reference collection before attempting to dereference its Ptr
 // (although it does verify ptr.isAvailable()). This means that in the
-// case where an association collection refers to multiple vailable
+// case where an association collection refers to multiple available
 // AProd collections, all of those collections will be read from file
 // even if the reference collection does not include items from one or
 // more of those AProd collections.
@@ -291,7 +292,8 @@ inline
 art::detail::BcollHelper<ProdB>::
 BcollHelper(InputTag const & assnsTag)
   :
-  assnsTag_(assnsTag)
+  assnsTag_(assnsTag),
+  seen_()
 {
 }
 
@@ -300,45 +302,52 @@ template <typename Bcoll>
 inline
 void
 art::detail::BcollHelper<ProdB>::
-init(size_t size, Bcoll & bColl) const
+init(size_t size, Bcoll & bColl)
 {
   // This works if BColl is a collection of pointers or Ptrs.
-  bColl.assign(size, 0);
+  bColl.assign(size, typename Bcoll::value_type());
+  seen_.assign(size, uint8_t (0u));
 }
 
 // 1.
 template <typename ProdB>
 template <typename Bcoll>
 inline
-typename std::enable_if<std::is_same<typename Bcoll::value_type, ProdB const *>::value>::type
+std::enable_if_t<std::is_same<typename Bcoll::value_type, ProdB const *>::value>
 art::detail::BcollHelper<ProdB>::
 fill(size_t index,
      Ptr<ProdB> const & item,
-     Bcoll & bColl) const
+     Bcoll & bColl)
 {
   // This works if BColl is a collection of pointers or Ptrs.
-  if (bColl[index]) {
+  if (seen_[index] == uint8_t(1u)) {
     throw Exception(errors::LogicError)
         << "Attempted to create a FindOne object for a one-many or many-many"
         << " association specified in collection "
         << assnsTag_
         << ".\n";
+  } else if (item) {
+    bColl[index] = item.get();
+    seen_[index] = uint8_t(1u);
+  } else {
+    throw Exception(errors::LogicError)
+      << "Attempted to create a FindOne object where an associated item is "
+      << "\nunavailable.\n";
   }
-  bColl[index] =  item.isAvailable() ? item.get() : nullptr;
 }
 
 // 2.
 template <typename ProdB>
 template <typename Bcoll>
 inline
-typename std::enable_if<std::is_convertible<typename Bcoll::value_type, art::Ptr<ProdB> >::value>::type
+std::enable_if_t<std::is_convertible<typename Bcoll::value_type, art::Ptr<ProdB> >::value>
 art::detail::BcollHelper<ProdB>::
 fill(size_t index,
      Ptr<ProdB> const & item,
-     Bcoll & bColl) const
+     Bcoll & bColl)
 {
   // This works if BColl is a collection of pointers or Ptrs.
-  if (bColl[index]) {
+  if (seen_[index] == uint8_t(1u)) {
     throw Exception(errors::LogicError)
         << "Attempted to create a FindOne object for a one-many or many-many"
         << " association specified in collection "
@@ -346,6 +355,7 @@ fill(size_t index,
         << ".\n";
   }
   bColl[index] = item;
+  seen_[index] = uint8_t(1u);
 }
 
 template <typename ProdB>
@@ -362,30 +372,26 @@ init(size_t size, std::vector<Bcoll> & bColls) const
 template <typename ProdB>
 template <typename Bcoll>
 inline
-typename std::enable_if<std::is_same<typename Bcoll::value_type, ProdB const *>::value>::type
+std::enable_if_t<std::is_same<typename Bcoll::value_type, ProdB const *>::value>
 art::detail::BcollHelper<ProdB>::
 fill(size_t index,
      Ptr<ProdB> const & item,
      std::vector<Bcoll> & bColls) const
 {
-  if (item) {
-    bColls[index].push_back( item.isAvailable() ? item.get() : nullptr);
-  }
+  bColls[index].push_back(item ? item.get() : nullptr);
 }
 
 // 4.
 template <typename ProdB>
 template <typename Bcoll>
 inline
-typename std::enable_if<std::is_convertible<typename Bcoll::value_type, art::Ptr<ProdB> >::value>::type
+std::enable_if_t<std::is_convertible<typename Bcoll::value_type, art::Ptr<ProdB> >::value>
 art::detail::BcollHelper<ProdB>::
 fill(size_t index,
      Ptr<ProdB> const & item,
      std::vector<Bcoll> & bColls) const
 {
-  if (item) {
-     bColls[index].push_back(item);
-  }
+  bColls[index].push_back(item);
 }
 
 #endif /* canvas_Persistency_Common_detail_IPRHelper_h */

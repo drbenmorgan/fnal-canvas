@@ -3,15 +3,7 @@ if(ALT_CMAKE)
   include(altCMakeLists.cmake)
 else()
 
-cet_make(SUBDIRS detail
-  LIBRARIES
-  canvas_Utilities
-  MF_MessageLogger
-  ${Boost_THREAD_LIBRARY}
-  NO_DICTIONARY
-  )
-
-art_dictionary()
+art_dictionary(DICTIONARY_LIBRARIES canvas)
 
 install_headers(SUBDIRS detail)
 install_source(SUBDIRS detail)
