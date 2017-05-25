@@ -1,4 +1,5 @@
 #include "canvas/Persistency/Provenance/rootNames.h"
+#include <array>
 
 namespace {
   using namespace std::string_literals;
