@@ -2,12 +2,6 @@ include_directories(${CLHEP_INCLUDE_DIR})
 include_directories(${cetlib_INCLUDE_DIR})
 include_directories(${Boost_INCLUDE_DIR})
 
+# NB: art_dictionary installs for us...
 art_dictionary(DICTIONARY_LIBRARIES CLHEP::CLHEP NO_CHECK_CLASS_VERSION)
 
-install(TARGETS canvas_Persistency_CLHEPDictionaries_dict
-  EXPORT ${PROJECT_NAME}Targets
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  COMPONENT Runtime
-  )

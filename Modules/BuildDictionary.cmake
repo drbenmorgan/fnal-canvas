@@ -63,7 +63,7 @@ if(HAVE_ROOT6)
   set(BD_WANT_PCM TRUE)
   set(GENREFLEX_FLAGS --fail_on_warnings)
 
-  # Where does this var come from?
+  # Where does this var come from? Does apear to be needed.
   if(ROOT6_HAS_NOINCLUDEPATHS)
     list(APPEND GENREFLEX_FLAGS --noIncludePaths)
   endif()
@@ -209,7 +209,9 @@ function(build_dictionary)
       endif()
     endforeach()
   endif()
-  list(APPEND dictionary_liblist ${ROOT_CORE} ${ROOT_REFLEX})
+
+  # Need to use correct Root libs here: ROOT_<NAME> is a UPSism
+  list(APPEND dictionary_liblist ${ROOT_Core_LIBRARY}) # Root 5 only?: ${ROOT_REFLEX})
 
   if(BD_WANT_ROOTMAP)
     set(ROOTMAP_OUTPUT ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_SHARED_LIBRARY_PREFIX}${dictname}_dict.rootmap)
