@@ -7,7 +7,7 @@ foreach(ART_IPR_BASE_NAME FindOne FindMany)
     ${CMAKE_CURRENT_BINARY_DIR}/${ART_IPR_CLASS_NAME}.h
     @ONLY)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${ART_IPR_CLASS_NAME}.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/canvas/Persistency/Provenance
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/canvas/Persistency/Common/
     )
 
   set(ART_IPR_BY_PTR true)
@@ -16,7 +16,7 @@ foreach(ART_IPR_BASE_NAME FindOne FindMany)
     ${CMAKE_CURRENT_BINARY_DIR}/${ART_IPR_CLASS_NAME}.h
     @ONLY)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${ART_IPR_CLASS_NAME}.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/canvas/Persistency/Provenance
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/canvas/Persistency/Common
     )
 endforeach()
 
