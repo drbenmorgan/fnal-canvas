@@ -12,6 +12,7 @@ This description also applies to every product instance on the branch.
 #include "canvas/Persistency/Provenance/BranchID.h"
 #include "canvas/Persistency/Provenance/BranchType.h"
 #include "canvas/Persistency/Provenance/ProcessConfigurationID.h"
+#include "canvas/Persistency/Provenance/ProductID.h"
 #include "canvas/Persistency/Provenance/ProvenanceFwd.h"
 #include "canvas/Persistency/Provenance/Transient.h"
 #include "canvas/Persistency/Provenance/TypeLabel.h"
@@ -39,11 +40,6 @@ namespace art {
     void setBranchDescriptionStreamer();
   }
 
-  // Declared below due to use of nested type:
-  //   std::string match(BranchDescription const& a,
-  //                     BranchDescription const& b,
-  //                     std::string const& fileName,
-  //                     BranchDescription::MatchMode m);
 }
 
 // ----------------------------------------------------------------------
@@ -54,7 +50,6 @@ public:
   static int constexpr invalidSplitLevel{-1};
   static int constexpr invalidBasketSize{0};
   static int constexpr invalidCompression{-1};
-  enum MatchMode {Strict = 0, Permissive};
 
   BranchDescription() = default;
 
@@ -81,7 +76,7 @@ public:
 
   std::set<fhicl::ParameterSetID> const& psetIDs() const {return psetIDs_;}
 
-  BranchID branchID() const {return branchID_;}
+  ProductID productID() const {return productID_;}
   BranchType branchType() const {return branchType_;}
   std::string const& branchName() const {return guts().branchName_;}
   std::string const& wrappedName() const {return guts().wrappedName_;}
@@ -90,10 +85,6 @@ public:
   void swap(BranchDescription& other);
 
   friend bool combinable(BranchDescription const&, BranchDescription const&);
-  friend std::string match(BranchDescription const&,
-                           BranchDescription const&,
-                           std::string const&,
-                           BranchDescription::MatchMode);
   friend bool operator<(BranchDescription const&, BranchDescription const&);
   friend bool operator==(BranchDescription const&, BranchDescription const&);
 
@@ -131,7 +122,7 @@ private:
   friend class detail::BranchDescriptionStreamer;
 
   bool transientsFluffed_() const {return !guts().branchName_.empty(); }
-  void initBranchID_();
+  void initProductID_();
   void fluffTransients_() const;
 
   fhicl::ParameterSetID const& psetID() const;
@@ -153,8 +144,8 @@ private:
   // the physical process that this program was part of (e.g. production)
   std::string processName_{};
 
-  // An ID uniquely identifying the branch
-  BranchID branchID_{};
+  // An ID uniquely identifying the product
+  ProductID productID_{};
 
   // the full name of the type of product this is
   std::string producedClassName_{};
@@ -176,13 +167,6 @@ private:
 
   mutable Transient<Transients> transients_{};
 };  // BranchDescription
-
-namespace art {
-  std::string match(BranchDescription const& a,
-                    BranchDescription const& b,
-                    std::string const& fileName,
-                    BranchDescription::MatchMode m);
-}
 
 #endif /* canvas_Persistency_Provenance_BranchDescription_h */
 

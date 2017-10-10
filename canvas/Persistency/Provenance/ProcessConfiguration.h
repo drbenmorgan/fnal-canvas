@@ -7,14 +7,11 @@
 //
 // ======================================================================
 
-#include "canvas/Persistency/Provenance/PassID.h"
 #include "canvas/Persistency/Provenance/ProcessConfigurationID.h"
 #include "canvas/Persistency/Provenance/ReleaseVersion.h"
 #include "fhiclcpp/ParameterSetID.h"
 #include <iosfwd>
 #include <string>
-
-// ----------------------------------------------------------------------
 
 namespace art {
 
@@ -23,37 +20,27 @@ namespace art {
 
     ProcessConfiguration(std::string const& procName,
                          fhicl::ParameterSetID const& pSetID,
-                         ReleaseVersion const& relVersion,
-                         PassID const& pass) :
+                         ReleaseVersion const& relVersion) :
       processName_{procName},
       parameterSetID_{pSetID},
-      releaseVersion_{relVersion},
-      passID_{pass}
+      releaseVersion_{relVersion}
     {}
 
     std::string const& processName() const {return processName_;}
     fhicl::ParameterSetID const& parameterSetID() const {return parameterSetID_;}
     ReleaseVersion const& releaseVersion() const {return releaseVersion_;}
-    PassID const& passID() const {return passID_;}
     ProcessConfigurationID id() const;
 
     std::string processName_ {};
     fhicl::ParameterSetID parameterSetID_ {};
     ReleaseVersion releaseVersion_ {};
-    PassID passID_ {};
   };
 
   bool
   operator<(ProcessConfiguration const& a, ProcessConfiguration const& b);
 
-  inline
   bool
-  operator==(ProcessConfiguration const& a, ProcessConfiguration const& b) {
-    return a.processName() == b.processName() &&
-    a.parameterSetID() == b.parameterSetID() &&
-    a.releaseVersion() == b.releaseVersion() &&
-    a.passID() == b.passID();
-  }
+  operator==(ProcessConfiguration const& a, ProcessConfiguration const& b);
 
   inline
   bool

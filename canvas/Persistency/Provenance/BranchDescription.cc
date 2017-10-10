@@ -2,6 +2,7 @@
 // vim: set sw=2:
 
 #include "canvas/Persistency/Provenance/ModuleDescription.h"
+#include "canvas/Persistency/Provenance/canonicalProductName.h"
 #include "canvas/Utilities/Exception.h"
 #include "canvas/Utilities/FriendlyName.h"
 #include "canvas/Utilities/WrappedClassName.h"
@@ -20,73 +21,54 @@
 using fhicl::ParameterSetID;
 
 namespace {
-
-  void throwExceptionWithText(const char* txt)
+  void throwExceptionWithText(char const* txt)
   {
     throw art::Exception(art::errors::LogicError)
       << "Problem using an incomplete BranchDescription\n"
       << txt
       << "\nPlease report this error to the ART developers\n";
   }
-
-  constexpr char underscore('_');
-  constexpr char period('.');
-
 }
 
 namespace art {
 
-BranchDescription::
-BranchDescription(BranchType const bt, TypeLabel const& tl, ModuleDescription const& md) :
+BranchDescription::BranchDescription(BranchType const bt, TypeLabel const& tl, ModuleDescription const& md) :
   branchType_{bt},
-  moduleLabel_(tl.hasEmulatedModule() ? tl.emulatedModule : md.moduleLabel()),
-  processName_(md.processName()),
-  producedClassName_(tl.className()),
-  friendlyClassName_(tl.friendlyClassName()),
-  productInstanceName_(tl.productInstanceName)
+  moduleLabel_{tl.hasEmulatedModule() ? tl.emulatedModule() : md.moduleLabel()},
+  processName_{md.processName()},
+  producedClassName_{tl.className()},
+  friendlyClassName_{tl.friendlyClassName()},
+  productInstanceName_{tl.productInstanceName()}
 {
   guts().produced_ = true;
   psetIDs_.insert(md.parameterSetID());
   processConfigurationIDs_.insert(md.processConfigurationID());
   throwIfInvalid_();
   fluffTransients_();
-  initBranchID_();
+  initProductID_();
 }
 
 void
-BranchDescription::
-initBranchID_()
+BranchDescription::initProductID_()
 {
   if (!transientsFluffed_()) {
     return;
   }
-  if (!branchID_.isValid()) {
-    branchID_.setID(guts().branchName_);
+  if (!productID_.isValid()) {
+    productID_.setID(guts().branchName_);
   }
 }
 
 void
-BranchDescription::
-fluffTransients_() const
+BranchDescription::fluffTransients_() const
 {
   if (transientsFluffed_()) {
     return;
   }
-  transients_.get().branchName_.reserve(friendlyClassName().size() +
-                                        moduleLabel().size() +
-                                        productInstanceName().size() +
-                                        processName().size() + 4);
-  transients_.get().branchName_ += friendlyClassName();
-  transients_.get().branchName_ += underscore;
-  transients_.get().branchName_ += moduleLabel();
-  transients_.get().branchName_ += underscore;
-  transients_.get().branchName_ += productInstanceName();
-  transients_.get().branchName_ += underscore;
-  transients_.get().branchName_ += processName();
-  transients_.get().branchName_ += period;
-  // It is *absolutely* needed to have the trailing period on the branch
-  // name, as this gives instruction to ROOT to split this branch in the
-  // modern (v4+) way vs the old way (v3-).
+  transients_.get().branchName_ = canonicalProductName(friendlyClassName(),
+                                                       moduleLabel(),
+                                                       productInstanceName(),
+                                                       processName());
   {
     auto pcl = TClass::GetClass(producedClassName().c_str());
     if (pcl == nullptr) {
@@ -190,8 +172,7 @@ fluffTransients_() const
 }
 
 ParameterSetID const&
-BranchDescription::
-psetID() const
+BranchDescription::psetID() const
 {
   assert(!psetIDs().empty());
   if (psetIDs().size() != 1) {
@@ -206,8 +187,7 @@ psetID() const
 }
 
 void
-BranchDescription::
-merge(BranchDescription const& other)
+BranchDescription::merge(BranchDescription const& other)
 {
   psetIDs_.insert(other.psetIDs().begin(), other.psetIDs().end());
   processConfigurationIDs_.insert(other.processConfigurationIDs().begin(),
@@ -226,27 +206,25 @@ merge(BranchDescription const& other)
 }
 
 void
-BranchDescription::
-write(std::ostream& os) const
+BranchDescription::write(std::ostream& os) const
 {
   os << "Branch Type = " << branchType_ << std::endl;
   os << "Process Name = " << processName() << std::endl;
   os << "ModuleLabel = " << moduleLabel() << std::endl;
-  os << "Branch ID = " << branchID() << '\n';
+  os << "Product ID = " << productID() << '\n';
   os << "Class Name = " << producedClassName() << '\n';
   os << "Friendly Class Name = " << friendlyClassName() << '\n';
   os << "Product Instance Name = " << productInstanceName() << std::endl;
 }
 
 void
-BranchDescription::
-swap(BranchDescription& other)
+BranchDescription::swap(BranchDescription& other)
 {
   using std::swap;
   swap(branchType_, other.branchType_);
   swap(moduleLabel_, other.moduleLabel_);
   swap(processName_, other.processName_);
-  swap(branchID_, other.branchID_);
+  swap(productID_, other.productID_);
   swap(producedClassName_, other.producedClassName_);
   swap(friendlyClassName_, other.friendlyClassName_);
   swap(productInstanceName_, other.productInstanceName_);
@@ -256,9 +234,9 @@ swap(BranchDescription& other)
 }
 
 void
-BranchDescription::
-throwIfInvalid_() const
+BranchDescription::throwIfInvalid_() const
 {
+  constexpr char underscore{'_'};
   if (transientsFluffed_()) {
     return;
   }
@@ -346,10 +324,10 @@ operator<(BranchDescription const& a, BranchDescription const& b)
   if (b.branchType() < a.branchType()) {
     return false;
   }
-  if (a.branchID() < b.branchID()) {
+  if (a.productID() < b.productID()) {
     return true;
   }
-  if (b.branchID() < a.branchID()) {
+  if (b.productID() < a.productID()) {
     return false;
   }
   if (a.psetIDs() < b.psetIDs()) {
@@ -371,13 +349,13 @@ bool
 combinable(BranchDescription const& a, BranchDescription const& b)
 {
   return
-    (a.branchType() == b.branchType()) &&
-    (a.processName() == b.processName()) &&
-    (a.producedClassName() == b.producedClassName()) &&
-    (a.friendlyClassName() == b.friendlyClassName()) &&
-    (a.productInstanceName() == b.productInstanceName()) &&
-    (a.moduleLabel() == b.moduleLabel()) &&
-    (a.branchID() == b.branchID());
+    (a.branchType() == b.branchType()) && // *
+    (a.processName() == b.processName()) && // **
+    (a.producedClassName() == b.producedClassName()) && // *
+    (a.friendlyClassName() == b.friendlyClassName()) && // **
+    (a.productInstanceName() == b.productInstanceName()) && // **
+    (a.moduleLabel() == b.moduleLabel()) && // **
+    (a.productID() == b.productID()); // *
 }
 
 bool
@@ -394,12 +372,10 @@ public:
 };
 
 void
-detail::
-BranchDescriptionStreamer::
-operator()(TBuffer& R_b, void* objp)
+detail::BranchDescriptionStreamer::operator()(TBuffer& R_b, void* objp)
 {
-  static TClassRef cl(TClass::GetClass(typeid(BranchDescription)));
-  BranchDescription* obj(reinterpret_cast<BranchDescription*>(objp));
+  static TClassRef cl{TClass::GetClass(typeid(BranchDescription))};
+  auto obj = reinterpret_cast<BranchDescription*>(objp);
   if (R_b.IsReading()) {
     cl->ReadBuffer(R_b, obj);
     obj->fluffTransients_();
@@ -410,119 +386,12 @@ operator()(TBuffer& R_b, void* objp)
 }
 
 void
-detail::
-setBranchDescriptionStreamer()
+detail::setBranchDescriptionStreamer()
 {
-  static TClassRef cl(TClass::GetClass(typeid(BranchDescription)));
-  if (cl->GetStreamer() == 0) {
+  static TClassRef cl{TClass::GetClass(typeid(BranchDescription))};
+  if (cl->GetStreamer() == nullptr) {
     cl->AdoptStreamer(new BranchDescriptionStreamer);
   }
-}
-
-std::string
-match(BranchDescription const& a, BranchDescription const& b,
-      std::string const& fileName, BranchDescription::MatchMode m)
-{
-  std::ostringstream differences;
-  if (a.branchName() != b.branchName()) {
-    differences
-        << "Branch name '"
-        << b.branchName()
-        << "' does not match '"
-        << a.branchName()
-        << "'.\n";
-  }
-  if (a.branchType() != b.branchType()) {
-    differences
-        << "Branch '"
-        << b.branchName()
-        << "' is a(n) '"
-        << b.branchType()
-        << "' branch\n";
-    differences
-        << "    in file '"
-        << fileName
-        << "', but a(n) '"
-        << a.branchType()
-        << "' branch in previous files.\n";
-  }
-  if (a.branchID() != b.branchID()) {
-    differences
-        << "Branch '"
-        << b.branchName()
-        << "' has a branch ID of '"
-        << b.branchID()
-        << "'\n";
-    differences
-        << "    in file '"
-        << fileName
-        << "', but '"
-        << a.branchID()
-        << "' in previous files.\n";
-  }
-  if (a.producedClassName() != b.producedClassName()) {
-    differences
-        << "Products on branch '"
-        << b.branchName()
-        << "' have type '"
-        << b.producedClassName()
-        << "'\n";
-    differences
-        << "    in file '"
-        << fileName
-        << "', but '"
-        << a.producedClassName()
-        << "' in previous files.\n";
-  }
-  if (m == BranchDescription::Strict) {
-    if (b.psetIDs().size() > 1) {
-      differences
-          << "Branch '"
-          << b.branchName()
-          << "' uses more than one parameter set in file '"
-          << fileName
-          << "'.\n";
-    }
-    else if (a.psetIDs().size() > 1) {
-      differences
-          << "Branch '"
-          << a.branchName()
-          << "' uses more than one parameter set in previous files.\n";
-    }
-    else if (a.psetIDs() != b.psetIDs()) {
-      differences
-          << "Branch '"
-          << b.branchName()
-          << "' uses different parameter sets in file '"
-          << fileName
-          << "'.\n"
-          << "    than in previous files.\n";
-    }
-    if (b.processConfigurationIDs().size() > 1) {
-      differences
-          << "Branch '"
-          << b.branchName()
-          << "' uses more than one process configuration in file '"
-          << fileName
-          << "'.\n";
-    }
-    else if (a.processConfigurationIDs().size() > 1) {
-      differences
-          << "Branch '"
-          << a.branchName()
-          << "' uses more than one process configuration in previous files.\n";
-    }
-    else if (a.processConfigurationIDs() != b.processConfigurationIDs()) {
-      differences
-          << "Branch '"
-          << b.branchName()
-          << "' uses different process configurations in file '"
-          << fileName
-          << "'.\n"
-          << "    than in previous files.\n";
-    }
-  }
-  return differences.str();
 }
 
 std::ostream&

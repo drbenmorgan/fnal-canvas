@@ -7,8 +7,7 @@
 
 #include "canvas/Utilities/Exception.h"
 #include "cetlib/container_algorithms.h"
-#include "cetlib/detail/metaprogramming.h"
-#include "cetlib/detail/metaprogramming.h"
+#include "cetlib/metaprogramming.h"
 #include "cetlib/map_vector.h"
 #include "cetlib_except/demangle.h"
 
@@ -66,20 +65,6 @@ namespace art
 
   //------------------------------------------------------------
   //
-  // DoNotRecordParents is a base class. Derive your own (EDProduct)
-  // class X from DoNotRecordParents when your class already keeps all
-  // data that are relevant to parentage internally, and the
-  // information kept by the event model would thus be redundant.
-  //
-  // DoNotRecordParents has no behavior; it is used at compile time to
-  // influence the behavior of Event::put.
-  //
-  // Usage:
-  //    class MyClass : public art::DoNotRecordParents { ... }
-  struct DoNotRecordParents { };
-
-  //------------------------------------------------------------
-  //
   // The trait struct template has_fillView<T> is used to
   // indicate whether or not the type T has a member function
   //
@@ -95,7 +80,7 @@ namespace art
   struct has_fillView : std::false_type {};
 
   template <typename T>
-  struct has_fillView<T, cet::detail::enable_if_function_exists_t<void(T::*)(std::vector<void const*>&), &T::fillView>> : std::true_type {};
+  struct has_fillView<T, cet::enable_if_function_exists_t<void(T::*)(std::vector<void const*>&), &T::fillView>> : std::true_type {};
 
   template <typename T>
   struct CannotFillView {

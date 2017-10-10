@@ -8,7 +8,7 @@ and how it came into existence, plus the status.
 
 ----------------------------------------------------------------------*/
 
-#include "canvas/Persistency/Provenance/BranchID.h"
+#include "canvas/Persistency/Provenance/ProductID.h"
 #include "canvas/Persistency/Provenance/ParentageID.h"
 #include "canvas/Persistency/Provenance/ProductStatus.h"
 #include "canvas/Persistency/Provenance/ProvenanceFwd.h"
@@ -22,37 +22,38 @@ namespace art {
   class ProductProvenance;
   typedef std::vector<ProductProvenance> ProductProvenances;
 
-  bool operator<(ProductProvenance const &a, ProductProvenance const &b);
-  std::ostream &operator<<(std::ostream &os, ProductProvenance const &p);
-  bool operator==(ProductProvenance const &a, ProductProvenance const &b);
-  bool operator!=(ProductProvenance const &a, ProductProvenance const &b);
+  bool operator<(ProductProvenance const& a, ProductProvenance const& b);
+  std::ostream& operator<<(std::ostream& os, ProductProvenance const& p);
+  bool operator==(ProductProvenance const& a, ProductProvenance const& b);
+  bool operator!=(ProductProvenance const& a, ProductProvenance const& b);
 }
 
 class art::ProductProvenance {
 public:
 
   ProductProvenance() = default;
-  explicit ProductProvenance(BranchID const& bid);
-  ProductProvenance(BranchID const& bid,
+  explicit ProductProvenance(ProductID pid);
+
+  ProductProvenance(ProductID pid,
                     ProductStatus status);
 
-  ProductProvenance(BranchID const& bid,
+  ProductProvenance(ProductID pid,
                     ProductStatus status,
                     std::shared_ptr<Parentage> parentagePtr);
 
-  ProductProvenance(BranchID const& bid,
+  ProductProvenance(ProductID pid,
                     ProductStatus status,
                     ParentageID const& id);
 
-  ProductProvenance(BranchID const& bid,
+  ProductProvenance(ProductID pid,
                     ProductStatus status,
-                    std::vector<BranchID> const& parents);
+                    std::vector<ProductID> const& parents);
 
   // use compiler-generated copy c'tor, copy assignment, and d'tor
 
   void write(std::ostream& os) const;
 
-  BranchID const& branchID() const {return branchID_;}
+  ProductID productID() const {return productID_;}
   ProductStatus const& productStatus() const {return productStatus_;}
   ParentageID const& parentageID() const {return parentageID_;}
   Parentage const& parentage() const;
@@ -73,7 +74,7 @@ private:
   std::shared_ptr<Parentage>& parentagePtr() const
   {return transients_.get().parentagePtr_;}
 
-  BranchID branchID_ {};
+  ProductID productID_ {};
   mutable ProductStatus productStatus_ {productstatus::uninitialized()};
   ParentageID parentageID_ {};
   mutable Transient<Transients> transients_ {};
@@ -82,7 +83,7 @@ private:
 inline
 bool
 art::operator < (ProductProvenance const& a, ProductProvenance const& b) {
-  return a.branchID() < b.branchID();
+  return a.productID() < b.productID();
 }
 
 inline
