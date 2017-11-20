@@ -2,26 +2,22 @@
 # NB: now build one lib, so recursion used to configure files and
 # build the dictionaries
 add_subdirectory(Version)
-add_subdirectory(Utilities)
+#add_subdirectory(Utilities)
 add_subdirectory(Persistency)
 
 # Build single top level canvas library.
-# Dictionaries handled in subdirs
 # NB: Maybe better handled with via recursion, target_add_sources
 # and/or object libs.
 add_library(canvas SHARED
   Persistency/Common/Assns.h
+  Persistency/Common/AssnsBase.h
   Persistency/Common/AssnsIter.h
   Persistency/Common/BoolCache.h
-  Persistency/Common/CacheStreamers.cc
-  Persistency/Common/CacheStreamers.h
   Persistency/Common/ConstPtrCache.h
   Persistency/Common/EDProduct.cc
   Persistency/Common/EDProduct.h
   Persistency/Common/EDProductGetter.h
   Persistency/Common/EDProductGetterFinder.h
-  Persistency/Common/FindMany.h.in
-  Persistency/Common/FindOne.h.in
   Persistency/Common/GetProduct.h
   Persistency/Common/HLTGlobalStatus.h
   Persistency/Common/HLTPathStatus.h
@@ -34,34 +30,27 @@ add_library(canvas SHARED
   Persistency/Common/RNGsnapshot.h
   Persistency/Common/RefCore.cc
   Persistency/Common/RefCore.h
-  Persistency/Common/RefCoreStreamer.cc
-  Persistency/Common/RefCoreStreamer.h
   Persistency/Common/TriggerResults.h
   Persistency/Common/Wrapper.h
-  Persistency/Common/detail/IPRHelper.h
-  Persistency/Common/detail/aggregate.cc
-  Persistency/Common/detail/aggregate.h
-  Persistency/Common/detail/getWrapperTIDs.cc
-  Persistency/Common/detail/getWrapperTIDs.h
-  Persistency/Common/detail/is_handle.h
-  Persistency/Common/detail/maybeCastObj.cc
-  Persistency/Common/detail/maybeCastObj.h
-  Persistency/Common/detail/setPtrVectorBaseStreamer.cc
-  Persistency/Common/detail/setPtrVectorBaseStreamer.h
-  Persistency/Common/detail/throwPartnerException.cc
-  Persistency/Common/detail/throwPartnerException.h
   Persistency/Common/fwd.h
   Persistency/Common/getElementAddresses.h
   Persistency/Common/setPtr.h
   Persistency/Common/traits.cc
   Persistency/Common/traits.h
+  Persistency/Common/detail/IPRHelper.h
+  Persistency/Common/detail/aggregate.cc
+  Persistency/Common/detail/aggregate.h
+  Persistency/Common/detail/is_handle.h
+  Persistency/Common/detail/maybeCastObj.cc
+  Persistency/Common/detail/maybeCastObj.h
+  Persistency/Common/detail/throwPartnerException.cc
+  Persistency/Common/detail/throwPartnerException.h
   Persistency/Provenance/BranchChildren.cc
   Persistency/Provenance/BranchChildren.h
   Persistency/Provenance/BranchDescription.cc
   Persistency/Provenance/BranchDescription.h
   Persistency/Provenance/BranchID.cc
   Persistency/Provenance/BranchID.h
-  Persistency/Provenance/BranchIDList.h
   Persistency/Provenance/BranchKey.cc
   Persistency/Provenance/BranchKey.h
   Persistency/Provenance/BranchListIndex.h
@@ -69,8 +58,6 @@ add_library(canvas SHARED
   Persistency/Provenance/BranchMapper.h
   Persistency/Provenance/BranchType.cc
   Persistency/Provenance/BranchType.h
-  Persistency/Provenance/DictionaryChecker.cc
-  Persistency/Provenance/DictionaryChecker.h
   Persistency/Provenance/EventAuxiliary.cc
   Persistency/Provenance/EventAuxiliary.h
   Persistency/Provenance/EventID.cc
@@ -98,7 +85,6 @@ add_library(canvas SHARED
   Persistency/Provenance/Parentage.h
   Persistency/Provenance/ParentageID.h
   Persistency/Provenance/ParentageRegistry.h
-  Persistency/Provenance/PassID.h
   Persistency/Provenance/ProcessConfiguration.cc
   Persistency/Provenance/ProcessConfiguration.h
   Persistency/Provenance/ProcessConfigurationID.h
@@ -112,6 +98,9 @@ add_library(canvas SHARED
   Persistency/Provenance/ProductProvenance.h
   Persistency/Provenance/ProductRegistry.h
   Persistency/Provenance/ProductStatus.h
+  Persistency/Provenance/ProductTables.cc
+  Persistency/Provenance/ProductTables.h
+  Persistency/Provenance/ProductToken.h
   Persistency/Provenance/ProvenanceFwd.h
   Persistency/Provenance/RangeSet.cc
   Persistency/Provenance/RangeSet.h
@@ -129,16 +118,28 @@ add_library(canvas SHARED
   Persistency/Provenance/SubRunID.h
   Persistency/Provenance/Timestamp.h
   Persistency/Provenance/Transient.h
-  Persistency/Provenance/TransientStreamer.cc
-  Persistency/Provenance/TransientStreamer.h
+  Persistency/Provenance/TypeLabel.cc
   Persistency/Provenance/TypeLabel.h
-  Persistency/Provenance/TypeTools.cc
-  Persistency/Provenance/TypeTools.h
-  Persistency/Provenance/TypeWithDict.cc
-  Persistency/Provenance/TypeWithDict.h
+  Persistency/Provenance/canonicalProductName.cc
+  Persistency/Provenance/canonicalProductName.h
   Persistency/Provenance/rootNames.cc
   Persistency/Provenance/rootNames.h
   Persistency/Provenance/thread_safe_registry_via_id.h
+  Persistency/Provenance/type_aliases.h
+  Persistency/Provenance/Compatibility/BranchIDList.h
+  Persistency/Provenance/Compatibility/type_aliases.h
+  Persistency/Provenance/detail/createProductLookups.cc
+  Persistency/Provenance/detail/createProductLookups.h
+  Persistency/Provenance/detail/createViewLookups.cc
+  Persistency/Provenance/detail/createViewLookups.h
+  Persistency/Common/detail/IPRHelper.h
+  Persistency/Common/detail/aggregate.cc
+  Persistency/Common/detail/aggregate.h
+  Persistency/Common/detail/is_handle.h
+  Persistency/Common/detail/maybeCastObj.cc
+  Persistency/Common/detail/maybeCastObj.h
+  Persistency/Common/detail/throwPartnerException.cc
+  Persistency/Common/detail/throwPartnerException.h
   Utilities/DebugMacros.cc
   Utilities/DebugMacros.h
   Utilities/EventIDMatcher.cc
@@ -148,17 +149,14 @@ add_library(canvas SHARED
   Utilities/FriendlyName.cc
   Utilities/FriendlyName.h
   Utilities/GetCanvasReleaseVersion.h
-  Utilities/GetPassID.h
   Utilities/InputTag.cc
   Utilities/InputTag.h
   Utilities/Level.h
-  Utilities/TestHelper.cc
-  Utilities/TestHelper.h
   Utilities/TypeID.cc
   Utilities/TypeID.h
   Utilities/WrappedClassName.cc
   Utilities/WrappedClassName.h
-  Utilities/altCMakeLists.cmake
+  Utilities/WrappedTypeID.h
   Utilities/ensurePointer.h
   Utilities/fwd.h
   Utilities/uniform_type_name.cc
@@ -170,13 +168,14 @@ add_library(canvas SHARED
 # NB: Neither set is complete yet because some deps like TBB
 # are pulled in via transitivitiy. Needs further review!
 target_include_directories(canvas PUBLIC
-  ${ROOT_INCLUDE_DIRS}
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
 target_link_libraries(canvas PUBLIC
   cetlib::cetlib
-  ${ROOT_Core_LIBRARY}
   fhiclcpp::fhiclcpp
   messagefacility::MF_MessageLogger
+  TBB::tbb
   CLHEP::CLHEP
   )
 

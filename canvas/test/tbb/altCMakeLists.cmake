@@ -1,5 +1,3 @@
-include_directories(${TBB_INCLUDE_DIRS})
-
 set(simple_tbb_tests
   tbb_init_t
   tbb_pfor_01_t
@@ -8,7 +6,7 @@ set(simple_tbb_tests
 
 foreach(tbb_test ${simple_tbb_tests})
   cet_test(${tbb_test}
-    LIBRARIES ${TBB_LIBRARIES}
+    LIBRARIES TBB::tbb
     )
 endforeach()
 

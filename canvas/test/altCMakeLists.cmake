@@ -1,6 +1,6 @@
 # Test still need CPPunit
 find_package(CppUnit REQUIRED)
-
+include(CetTest)
 cet_enable_asserts()
 
 cet_test_env("FHICL_FILE_PATH=.")

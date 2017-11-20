@@ -20,12 +20,3 @@ foreach(ART_IPR_BASE_NAME FindOne FindMany)
     )
 endforeach()
 
-# - Dictify
-# At present, art_dictionary has no concept of target properties,
-# so MUST use include_directories for now - eventually need to use genexs, but that requires fiddling in dict generation
-include_directories(${ROOT_INCLUDE_DIRS}
-  ${Boost_INCLUDE_DIRS}
-  ${CLHEP_INCLUDE_DIRS}
-  ${cetlib_INCLUDE_DIRS})
-art_dictionary(DICTIONARY_LIBRARIES canvas)
-
