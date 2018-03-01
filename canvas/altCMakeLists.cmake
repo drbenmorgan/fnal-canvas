@@ -171,13 +171,24 @@ target_include_directories(canvas PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
-target_link_libraries(canvas PUBLIC
-  cetlib::cetlib
-  fhiclcpp::fhiclcpp
-  messagefacility::MF_MessageLogger
-  TBB::tbb
-  CLHEP::CLHEP
+target_link_libraries(canvas
+  INTERFACE
+    range-v3::range-v3
+  PUBLIC
+    cetlib_except::cetlib_except
+    cetlib::cetlib
+    fhiclcpp::fhiclcpp
+    messagefacility::MF_MessageLogger
+    CLHEP::CLHEP
+    TBB::tbb
+    Threads::Threads
+    ${CMAKE_DL_LIBS}
   )
+
+if(canvas_NEED_ROOT_INTROSPECTION)
+  target_include_directories(canvas PRIVATE ${ROOT_INCLUDE_DIRS})
+  target_link_libraries(canvas PRIVATE ROOT::Core)
+endif()
 
 install(TARGETS canvas
   EXPORT ${PROJECT_NAME}Targets

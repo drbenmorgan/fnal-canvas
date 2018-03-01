@@ -1,7 +1,8 @@
 # - When user supplies "-DALT_CMAKE" use the non-CET/UPS system
 if(ALT_CMAKE)
   include(altCMakeLists.cmake)
-else()
+  return()
+endif()
 
 foreach(ART_IPR_BASE_NAME FindOne FindMany)
   UNSET(ART_IPR_BY_PTR)
@@ -20,4 +21,3 @@ endforeach()
 install_headers(SUBDIRS detail)
 install_source(SUBDIRS detail)
 
-endif() # ALT_CMAKE

@@ -1,6 +1,3 @@
-if(ALT_CMAKE)
-  include(altCMakeLists.cmake)
-else()
 # cet_test macro
 
 set(default_canvas_test_libraries
@@ -38,6 +35,10 @@ cet_test(uniform_type_name_test USE_BOOST_UNIT
   canvas
   )
 
+if(ALT_CMAKE)
+  # easier to do?
+  cet_test(EventIDMatcher_t LIBRARIES canvas cetlib)
+else()
 cet_make_exec(EventIDMatcher_t
   NO_INSTALL
   LIBRARIES
@@ -48,5 +49,4 @@ cet_make_exec(EventIDMatcher_t
 cet_test(EventIDMatcher_test HANDBUILT
   TEST_EXEC EventIDMatcher_t
 )
-
 endif()

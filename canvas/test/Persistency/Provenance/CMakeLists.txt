@@ -1,7 +1,3 @@
-if(ALT_CMAKE)
-  include(altCMakeLists.cmake)
-else()
-
 set(CMAKE_MODULE_PATH
   ${CMAKE_MODULE_PATH}
   ${CMAKE_CURRENT_SOURCE_DIR})
@@ -35,4 +31,3 @@ cet_test(RangeSet_t USE_BOOST_UNIT
 
 cet_test(ParentageRegistry_t USE_BOOST_UNIT LIBRARIES canvas)
 
-endif()
