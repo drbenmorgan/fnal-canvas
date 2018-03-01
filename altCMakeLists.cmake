@@ -42,7 +42,7 @@ find_package(TBB REQUIRED)
 # We need range-v3. Range v3 >= 0.3.5 supplies a config file,
 # but needs a closer look.
 # Then we need the local module
-list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}")
+list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_LIST_DIR}")
 find_package(Range-v3 REQUIRED NO_CONFIG)
 list(REMOVE_AT CMAKE_MODULE_PATH 0)
 install(FILES FindRange-v3.cmake DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}/")
