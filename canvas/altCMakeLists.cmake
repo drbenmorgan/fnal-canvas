@@ -10,6 +10,7 @@ add_subdirectory(Persistency)
 # and/or object libs.
 add_library(canvas SHARED
   Persistency/Common/Assns.h
+  Persistency/Common/AssnsAlgorithms.h
   Persistency/Common/AssnsBase.h
   Persistency/Common/AssnsIter.h
   Persistency/Common/BoolCache.h
@@ -58,6 +59,8 @@ add_library(canvas SHARED
   Persistency/Provenance/BranchMapper.h
   Persistency/Provenance/BranchType.cc
   Persistency/Provenance/BranchType.h
+  Persistency/Provenance/Compatibility/BranchIDList.h
+  Persistency/Provenance/Compatibility/type_aliases.h
   Persistency/Provenance/EventAuxiliary.cc
   Persistency/Provenance/EventAuxiliary.h
   Persistency/Provenance/EventID.cc
@@ -85,6 +88,7 @@ add_library(canvas SHARED
   Persistency/Provenance/Parentage.h
   Persistency/Provenance/ParentageID.h
   Persistency/Provenance/ParentageRegistry.h
+  Persistency/Provenance/Persistable.h
   Persistency/Provenance/ProcessConfiguration.cc
   Persistency/Provenance/ProcessConfiguration.h
   Persistency/Provenance/ProcessConfigurationID.h
@@ -126,20 +130,10 @@ add_library(canvas SHARED
   Persistency/Provenance/rootNames.h
   Persistency/Provenance/thread_safe_registry_via_id.h
   Persistency/Provenance/type_aliases.h
-  Persistency/Provenance/Compatibility/BranchIDList.h
-  Persistency/Provenance/Compatibility/type_aliases.h
   Persistency/Provenance/detail/createProductLookups.cc
   Persistency/Provenance/detail/createProductLookups.h
   Persistency/Provenance/detail/createViewLookups.cc
   Persistency/Provenance/detail/createViewLookups.h
-  Persistency/Common/detail/IPRHelper.h
-  Persistency/Common/detail/aggregate.cc
-  Persistency/Common/detail/aggregate.h
-  Persistency/Common/detail/is_handle.h
-  Persistency/Common/detail/maybeCastObj.cc
-  Persistency/Common/detail/maybeCastObj.h
-  Persistency/Common/detail/throwPartnerException.cc
-  Persistency/Common/detail/throwPartnerException.h
   Utilities/DebugMacros.cc
   Utilities/DebugMacros.h
   Utilities/EventIDMatcher.cc

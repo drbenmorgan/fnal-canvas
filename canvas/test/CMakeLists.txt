@@ -13,6 +13,8 @@ if(ALT_CMAKE)
   find_package(Boost REQUIRED unit_test_framework)
   find_package(CppUnit REQUIRED)
 
+  # Add output path to CETD_LIBRARY_PATH
+  cet_test_env("CETD_LIBRARY_PATH=$<TARGET_FILE_DIR:canvas>:$ENV{CETD_LIBRARY_PATH}")
   # Create forwards from UPS style targets/variables to full imported
   # targets
   include_directories(${PROJECT_SOURCE_DIR})
